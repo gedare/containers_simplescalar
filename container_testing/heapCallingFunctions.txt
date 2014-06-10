@@ -1,0 +1,6 @@
+printf 1
+malloc 1
+main 10
+foo 3
+exit 1
+bar 13

@@ -1,0 +1,2178 @@
+sim-outorder: SimpleScalar/ARM Tool Set version 3.0 of November, 2000.
+Copyright (c) 1994-2000 by Todd M. Austin.  All Rights Reserved.
+This version of SimpleScalar is licensed for academic non-commercial use only.
+
+0. qcount 2
+1. main 1
+2. foo 1
+3. bar 1
+
+DEFAULT***create new container group 0 longjmp***
+
+DEFAULT***create new container group -1 stpcpy***
+
+DEFAULT***create new container group -2 tsearch***
+
+DEFAULT***create new container group -3 profil_counter***
+
+DEFAULT***create new container group -4 __getdtablesize***
+
+DEFAULT***create new container group -5 _IO_remove_marker***
+
+DEFAULT***create new container group -6 __libc_sigaction***
+
+DEFAULT***create new container group -7 __isnanl***
+
+DEFAULT***create new container group -8 __pthread_cleanup_upto***
+
+DEFAULT***create new container group -9 mbrlen***
+
+DEFAULT***create new container group -10 strcpy***
+
+DEFAULT***create new container group -11 _IO_wdefault_xsgetn***
+
+DEFAULT***create new container group -12 __fcloseall***
+
+DEFAULT***create new container group -13 __ashldi3***
+
+DEFAULT***create new container group -14 _dl_setup_hash***
+
+DEFAULT***create new container group -15 _IO_link_in***
+
+DEFAULT***create new container group -16 unsetenv***
+
+DEFAULT***create new container group -17 _dl_debug_printf***
+
+DEFAULT***create new container group -18 gsignal***
+
+DEFAULT***create new container group -19 _IO_sputbackc***
+
+DEFAULT***create new container group -20 _IO_default_finish***
+
+DEFAULT***create new container group -21 bcmp***
+
+DEFAULT***create new container group -22 _dl_check_map_versions***
+
+DEFAULT***create new container group -23 __gconv_transform_utf8_internal***
+
+DEFAULT***create new container group -24 __default_morecore***
+
+DEFAULT***create new container group -25 __longjmp***
+
+DEFAULT***create new container group -26 _dl_receive_error***
+
+DEFAULT***create new container group -27 _IO_file_finish***
+
+DEFAULT***create new container group -28 getrlimit***
+
+DEFAULT***create new container group -29 _nl_unload_domain***
+
+DEFAULT***create new container group -30 __pthread_mutexattr_destroy***
+
+DEFAULT***create new container group -31 __mpn_impn_mul_n_basecase***
+
+DEFAULT***create new container group -32 _IO_wdoallocbuf***
+
+DEFAULT***create new container group -33 getgid***
+
+DEFAULT***create new container group -34 __getpid***
+
+DEFAULT***create new container group -35 _IO_list_lock***
+
+DEFAULT***create new container group -36 sysconf***
+
+DEFAULT***create new container group -37 printf***
+
+DEFAULT***create new container group -38 __strtod_internal***
+
+DEFAULT***create new container group -39 __pthread_fork***
+
+DEFAULT***create new container group -40 _IO_seekoff_unlocked***
+
+DEFAULT***create new container group -41 _nl_load_domain***
+
+DEFAULT***create new container group -42 _IO_default_doallocate***
+
+DEFAULT***create new container group -43 __new_getrlimit***
+
+DEFAULT***create new container group -44 getdtablesize***
+
+DEFAULT***create new container group -45 __fsetlocking***
+
+DEFAULT***create new container group -46 _wordcopy_fwd_aligned***
+
+DEFAULT***create new container group -47 _dl_important_hwcaps***
+
+DEFAULT***create new container group -48 ___xstat64***
+
+DEFAULT***create new container group -49 _IO_new_file_xsputn***
+
+DEFAULT***create new container group -50 _dl_reloc_bad_type***
+
+DEFAULT***create new container group -51 _IO_least_wmarker***
+
+DEFAULT***create new container group -52 _IO_default_sync***
+
+DEFAULT***create new container group -53 _IO_file_sync***
+
+DEFAULT***create new container group -54 __tzset***
+
+DEFAULT***create new container group -55 __strtoull_internal***
+
+DEFAULT***create new container group -56 __mpn_impn_sqr_n_basecase***
+
+DEFAULT***create new container group -57 __pthread_once***
+
+DEFAULT***create new container group -58 _dl_lookup_versioned_symbol_skip***
+
+DEFAULT***create new container group -59 _IO_fflush***
+
+DEFAULT***create new container group -60 _IO_seekwmark***
+
+DEFAULT***create new container group -61 __pthread_mutex_lock***
+
+DEFAULT***create new container group -62 _IO_file_write***
+
+DEFAULT***create new container group -63 __gconv_transform_ascii_internal***
+
+DEFAULT***create new container group -64 __init_misc***
+
+DEFAULT***create new container group -65 __mpn_sub_n***
+
+DEFAULT***create new container group -66 __wcsmbs_clone_conv***
+
+DEFAULT***create new container group -67 _int_free***
+
+DEFAULT***create new container group -68 strndup***
+
+DEFAULT***create new container group -69 geteuid***
+
+DEFAULT***create new container group -70 __mpn_cmp***
+
+DEFAULT***create new container group -71 __mbrlen***
+
+DEFAULT***create new container group -72 malloc_get_state***
+
+DEFAULT***create new container group -73 argz_add_sep***
+
+DEFAULT***create new container group -74 __mpn_addmul_1***
+
+DEFAULT***create new container group -75 __strnlen***
+
+DEFAULT***create new container group -76 __gconv***
+
+DEFAULT***create new container group -77 __cfree***
+
+DEFAULT***create new container group -78 memmove***
+
+DEFAULT***create new container group -79 __gconv_transform_ucs2_internal***
+
+DEFAULT***create new container group -80 __tcgetattr***
+
+DEFAULT***create new container group -81 _dl_new_object***
+
+DEFAULT***create new container group -82 __calloc***
+
+DEFAULT***create new container group -83 _IO_default_xsgetn***
+
+DEFAULT***create new container group -84 __endmntent***
+
+DEFAULT***create new container group -85 munmap***
+
+DEFAULT***create new container group -86 __gconv_get_path***
+
+DEFAULT***create new container group -87 _longjmp***
+
+DEFAULT***create new container group -88 __tsearch***
+
+DEFAULT***create new container group -89 _IO_vasprintf***
+
+DEFAULT***create new container group -90 _IO_file_seekoff_mmap***
+
+DEFAULT***create new container group -91 __libc_fcntl***
+
+DEFAULT***create new container group -92 __gettext_free_exp***
+
+DEFAULT***create new container group -93 __isnan***
+
+DEFAULT***create new container group -94 _dl_load_cache_lookup***
+
+DEFAULT***create new container group -95 __write***
+
+DEFAULT***create new container group -96 __gettext_extract_plural***
+
+DEFAULT***create new container group -97 malloc_stats***
+
+DEFAULT***create new container group -98 __mmap***
+
+DEFAULT***create new container group -99 _IO_sgetn***
+
+DEFAULT***create new container group -100 __mprotect***
+
+DEFAULT***create new container group -101 __libc_independent_comalloc***
+
+DEFAULT***create new container group -102 __add_to_environ***
+
+DEFAULT***create new container group -103 getenv***
+
+DEFAULT***create new container group -104 _IO_file_seek***
+
+DEFAULT***create new container group -105 wcslen***
+
+DEFAULT***create new container group -106 _bss_end__***
+
+DEFAULT***create new container group -107 __pthread_mutexattr_settype***
+
+DEFAULT***create new container group -108 __getmntent_r***
+
+DEFAULT***create new container group -109 strtold***
+
+DEFAULT***create new container group -110 getegid***
+
+DEFAULT***create new container group -111 __tdestroy***
+
+DEFAULT***create new container group -112 __rawmemchr***
+
+DEFAULT***create new container group -113 __getcwd***
+
+DEFAULT***create new container group -114 _IO_init_marker***
+
+DEFAULT***create new container group -115 __strtol_internal***
+
+DEFAULT***create new container group -116 bsearch***
+
+DEFAULT***create new container group -117 wmempcpy***
+
+DEFAULT***create new container group -118 __woverflow***
+
+DEFAULT***create new container group -119 __register_printf_function***
+
+DEFAULT***create new container group -120 vsscanf***
+
+DEFAULT***create new container group -121 __mpn_mul_n***
+
+DEFAULT***create new container group -122 _IO_new_file_init***
+
+DEFAULT***create new container group -123 getpid***
+
+DEFAULT***create new container group -124 getpagesize***
+
+DEFAULT***create new container group -125 __gconv_lookup_cache***
+
+DEFAULT***create new container group -126 qsort***
+
+DEFAULT***create new container group -127 __posix_memalign***
+
+DEFAULT***create new container group -128 _IO_flush_all_linebuffered***
+
+DEFAULT***create new container group -129 _IO_fclose***
+
+DEFAULT***create new container group -130 __strtoll_internal***
+
+DEFAULT***create new container group -131 _nl_expand_alias***
+
+DEFAULT***create new container group -132 _IO_wdo_write***
+
+DEFAULT***create new container group -133 __getdelim***
+
+DEFAULT***create new container group -134 __read***
+
+DEFAULT***create new container group -135 __wcschrnul***
+
+DEFAULT***create new container group -136 _IO_default_underflow***
+
+DEFAULT***create new container group -137 _dl_rtld_map***
+
+DEFAULT***create new container group -138 _IO_funlockfile***
+
+DEFAULT***create new container group -139 _dl_init***
+
+DEFAULT***create new container group -140 __gconv_load_cache***
+
+DEFAULT***create new container group -141 __mallinfo***
+
+DEFAULT***create new container group -142 __gconv_transform_ucs4le_internal***
+
+DEFAULT***create new container group -143 _IO_switch_to_wget_mode***
+
+DEFAULT***create new container group -144 __localtime_r***
+
+DEFAULT***create new container group -145 __hasmntopt***
+
+DEFAULT***create new container group -146 __gettextparse***
+
+DEFAULT***create new container group -147 memcpy***
+
+DEFAULT***create new container group -148 __strncasecmp***
+
+DEFAULT***create new container group -149 setitimer***
+
+DEFAULT***create new container group -150 _IO_default_xsputn***
+
+DEFAULT***create new container group -151 __mpn_lshift***
+
+DEFAULT***create new container group -152 __stop___libc_subfreeres***
+
+DEFAULT***create new container group -153 _nl_load_locale***
+
+DEFAULT***create new container group -154 argz_count***
+
+DEFAULT***create new container group -155 _IO_fwrite***
+
+DEFAULT***create new container group -156 _IO_default_setbuf***
+
+DEFAULT***create new container group -157 _IO_sungetc***
+
+DEFAULT***create new container group -158 __gconv_get_cache***
+
+DEFAULT***create new container group -159 __gconv_find_shlib***
+
+DEFAULT***create new container group -160 _IO_fwide***
+
+DEFAULT***create new container group -161 readlink***
+
+DEFAULT***create new container group -162 _nl_unload_locale***
+
+DEFAULT***create new container group -163 _IO_new_file_close_it***
+
+DEFAULT***create new container group -164 _IO_wfile_overflow***
+
+DEFAULT***create new container group -165 __libc_memalign***
+
+DEFAULT***create new container group -166 __pthread_do_exit***
+
+DEFAULT***create new container group -167 __gconv_translit_find***
+
+DEFAULT***create new container group -168 __overflow***
+
+DEFAULT***create new container group -169 __pthread_mutex_init***
+
+DEFAULT***create new container group -170 mbrtowc***
+
+DEFAULT***create new container group -171 __fini_array_end***
+
+DEFAULT***create new container group -172 __btowc***
+
+DEFAULT***create new container group -173 __mpn_mul***
+
+DEFAULT***create new container group -174 _IO_flockfile***
+
+DEFAULT***create new container group -175 _dl_non_dynamic_init***
+
+DEFAULT***create new container group -176 getuid***
+
+DEFAULT***create new container group -177 __isinf***
+
+DEFAULT***create new container group -178 __memalign***
+
+DEFAULT***create new container group -179 hasmntopt***
+
+DEFAULT***create new container group -180 __mpn_submul_1***
+
+DEFAULT***create new container group -181 __pthread_sigaction***
+
+DEFAULT***create new container group -182 _IO_file_close***
+
+DEFAULT***create new container group -183 argz_stringify***
+
+DEFAULT***create new container group -184 __malloc_trim***
+
+DEFAULT***create new container group -185 malloc***
+
+DEFAULT***create new container group -186 __open***
+
+DEFAULT***create new container group -187 _IO_unsave_markers***
+
+DEFAULT***create new container group -188 __udivsi3***
+
+DEFAULT***create new container group -189 isatty***
+
+DEFAULT***create new container group -190 __llseek***
+
+DEFAULT***create new container group -191 _dl_lookup_symbol_skip***
+
+DEFAULT***create new container group -192 siglongjmp***
+
+DEFAULT***create new container group -193 __stop___libc_freeres_ptrs***
+
+DEFAULT***create new container group -194 __wcsmbs_getfct***
+
+DEFAULT***create new container group -195 __gconv_transform_internal_ucs4***
+
+DEFAULT***create new container group -196 __asprintf***
+
+DEFAULT***create new container group -197 __strerror_r***
+
+DEFAULT***create new container group -198 btowc***
+
+DEFAULT***create new container group -199 __wcsmbs_load_conv***
+
+DEFAULT***create new container group -200 strtoll***
+
+DEFAULT***create new container group -201 __mpn_impn_sqr_n***
+
+DEFAULT***create new container group -202 _dl_lookup_versioned_symbol***
+
+DEFAULT***create new container group -203 _dl_mcount_wrapper***
+
+DEFAULT***create new container group -204 __mpn_impn_mul_n***
+
+DEFAULT***create new container group -205 __current_locale_name***
+
+DEFAULT***create new container group -206 __bss_start__***
+
+DEFAULT***create new container group -207 __pthread_rwlock_rdlock***
+
+DEFAULT***create new container group -208 __libc_longjmp***
+
+DEFAULT***create new container group -209 strtoul***
+
+DEFAULT***create new container group -210 __mpn_construct_float***
+
+DEFAULT***create new container group -211 __strsep***
+
+DEFAULT***create new container group -212 __new_exitfn***
+
+DEFAULT***create new container group -213 __libc_alloca_cutoff***
+
+DEFAULT***create new container group -214 __start___libc_subfreeres***
+
+DEFAULT***create new container group -215 _IO_switch_to_main_wget_area***
+
+DEFAULT***create new container group -216 __dcgettext***
+
+DEFAULT***create new container group -217 __libc_csu_fini***
+
+DEFAULT***create new container group -218 _IO_str_init_readonly***
+
+DEFAULT***create new container group -219 _IO_file_seekoff***
+
+DEFAULT***create new container group -220 __libc_init_secure***
+
+DEFAULT***create new container group -221 _pthread_cleanup_pop_restore***
+
+DEFAULT***create new container group -222 __offtime***
+
+DEFAULT***create new container group -223 __start___libc_freeres_ptrs***
+
+DEFAULT***create new container group -224 _IO_adjust_wcolumn***
+
+DEFAULT***create new container group -225 __strtoul_internal***
+
+DEFAULT***create new container group -226 _IO_str_seekoff***
+
+DEFAULT***create new container group -227 pvalloc***
+
+DEFAULT***create new container group -228 __getgid***
+
+DEFAULT***create new container group -229 __pthread_rwlock_unlock***
+
+DEFAULT***create new container group -230 _IO_file_setbuf***
+
+DEFAULT***create new container group -231 __lseek64***
+
+DEFAULT***create new container group -232 _IO_new_file_fopen***
+
+DEFAULT***create new container group -233 mempcpy***
+
+DEFAULT***create new container group -234 _IO_printf***
+
+DEFAULT***create new container group -235 __libc_mallinfo***
+
+DEFAULT***create new container group -236 fflush***
+
+DEFAULT***create new container group -237 _IO_new_fopen***
+
+DEFAULT***create new container group -238 __gconv_btwoc_ascii***
+
+DEFAULT***create new container group -239 __wcslen***
+
+DEFAULT***create new container group -240 _IO_default_write***
+
+DEFAULT***create new container group -241 __libc_read***
+
+DEFAULT***create new container group -242 __tzname_max***
+
+DEFAULT***create new container group -243 __libc_disable_asynccancel***
+
+DEFAULT***create new container group -244 __gconv_find_transform***
+
+DEFAULT***create new container group -245 __xstat64***
+
+DEFAULT***create new container group -246 _IO_file_close_mmap***
+
+DEFAULT***create new container group -247 __pthread_initialize***
+
+DEFAULT***create new container group -248 __umoddi3***
+
+DEFAULT***create new container group -249 lseek***
+
+DEFAULT***create new container group -250 __libc_realloc***
+
+DEFAULT***create new container group -251 wmemcpy***
+
+DEFAULT***create new container group -252 __gconv_transform_ucs2reverse_internal***
+
+DEFAULT***create new container group -253 clearenv***
+
+DEFAULT***create new container group -254 mmap***
+
+DEFAULT***create new container group -255 strncasecmp***
+
+DEFAULT***create new container group -256 _Exit***
+
+DEFAULT***create new container group -257 _nl_intern_locale_data***
+
+DEFAULT***create new container group -258 __udivdi3***
+
+DEFAULT***create new container group -259 _nl_cleanup_ctype***
+
+DEFAULT***create new container group -260 abort***
+
+DEFAULT***create new container group -261 __sigjmp_save***
+
+DEFAULT***create new container group -262 _dl_close***
+
+DEFAULT***create new container group -263 __printf_fp***
+
+DEFAULT***create new container group -264 _IO_wpadn***
+
+DEFAULT***create new container group -265 _nl_postload_ctype***
+
+DEFAULT***create new container group -266 tdelete***
+
+DEFAULT***create new container group -267 _IO_fputs***
+
+DEFAULT***create new container group -268 __gconv_transform_ucs4_internal***
+
+DEFAULT***create new container group -269 _init***
+
+DEFAULT***create new container group -270 _IO_str_pbackfail***
+
+DEFAULT***create new container group -271 _IO_wfile_xsputn***
+
+DEFAULT***create new container group -272 _IO_default_imbue***
+
+DEFAULT***create new container group -273 __mpn_divrem***
+
+DEFAULT***create new container group -274 strtoq***
+
+DEFAULT***create new container group -275 strtol***
+
+DEFAULT***create new container group -276 __sigsetjmp***
+
+DEFAULT***create new container group -277 __libc_lseek64***
+
+DEFAULT***create new container group -278 _dl_lookup_symbol***
+
+DEFAULT***create new container group -279 strnlen***
+
+DEFAULT***create new container group -280 rawmemchr***
+
+DEFAULT***create new container group -281 __signbit***
+
+DEFAULT***create new container group -282 __kill***
+
+DEFAULT***create new container group -283 uname***
+
+DEFAULT***create new container group -284 _nl_find_domain***
+
+DEFAULT***create new container group -285 _IO_default_read***
+
+DEFAULT***create new container group -286 _IO_file_close_it***
+
+DEFAULT***create new container group -287 _itowa***
+
+DEFAULT***create new container group -288 _IO_iter_begin***
+
+DEFAULT***create new container group -289 strrchr***
+
+DEFAULT***create new container group -290 mbsnrtowcs***
+
+DEFAULT***create new container group -291 __ctype_tolower_loc***
+
+DEFAULT***create new container group -292 __libc_check_standard_fds***
+
+DEFAULT***create new container group -293 __mpn_construct_double***
+
+DEFAULT***create new container group -294 calloc***
+
+DEFAULT***create new container group -295 __start___libc_atexit***
+
+DEFAULT***create new container group -296 __setitimer***
+
+DEFAULT***create new container group -297 strcasecmp_l***
+
+DEFAULT***create new container group -298 _IO_file_stat***
+
+DEFAULT***create new container group -299 _dl_start***
+
+DEFAULT***create new container group -300 __pthread_mutex_unlock***
+
+DEFAULT***create new container group -301 malloc_usable_size***
+
+DEFAULT***create new container group -302 __strtold_internal***
+
+DEFAULT***create new container group -303 tdestroy***
+
+DEFAULT***create new container group -304 __tzfile_default***
+
+DEFAULT***create new container group -305 _IO_wfile_sync***
+
+DEFAULT***create new container group -306 __libc_pvalloc***
+
+DEFAULT***create new container group -307 _dl_runtime_resolve***
+
+DEFAULT***create new container group -308 __pthread_thread_self***
+
+DEFAULT***create new container group -309 strtod***
+
+DEFAULT***create new container group -310 isinf***
+
+DEFAULT***create new container group -311 rindex***
+
+DEFAULT***create new container group -312 __guess_grouping***
+
+DEFAULT***create new container group -313 write***
+
+DEFAULT***create new container group -314 __libc_valloc***
+
+DEFAULT***create new container group -315 __dcigettext***
+
+DEFAULT***create new container group -316 fprintf***
+
+DEFAULT***create new container group -317 __lshrdi3***
+
+DEFAULT***create new container group -318 kill***
+
+DEFAULT***create new container group -319 __pthread_mutex_trylock***
+
+DEFAULT***create new container group -320 _IO_str_finish***
+
+DEFAULT***create new container group -321 _nl_normalize_codeset***
+
+DEFAULT***create new container group -322 dcgettext***
+
+DEFAULT***create new container group -323 _dl_debug_printf_c***
+
+DEFAULT***create new container group -324 _IO_default_showmanyc***
+
+DEFAULT***create new container group -325 getmntent_r***
+
+DEFAULT***create new container group -326 __get_nprocs***
+
+DEFAULT***create new container group -327 __isatty***
+
+DEFAULT***create new container group -328 __umodsi3***
+
+DEFAULT***create new container group -329 __profile_frequency***
+
+DEFAULT***create new container group -330 _dl_debug_state***
+
+DEFAULT***create new container group -331 __gconv_transform_internal_ascii***
+
+DEFAULT***create new container group -332 __stpcpy***
+
+DEFAULT***create new container group -333 __mmap64***
+
+DEFAULT***create new container group -334 _IO_str_overflow***
+
+DEFAULT***create new container group -335 _dl_initial_error_catch_tsd***
+
+DEFAULT***create new container group -336 __malloc***
+
+DEFAULT***create new container group -337 _dl_init_paths***
+
+DEFAULT***create new container group -338 _int_new_arena***
+
+DEFAULT***create new container group -339 _IO_file_xsgetn***
+
+DEFAULT***create new container group -340 _IO_cleanup***
+
+DEFAULT***create new container group -341 _IO_default_seekpos***
+
+DEFAULT***create new container group -342 __gconv_open***
+
+DEFAULT***create new container group -343 __free***
+
+DEFAULT***create new container group -344 __gconv_transform_internal_ucs2***
+
+DEFAULT***create new container group -345 fseek***
+
+DEFAULT***create new container group -346 mremap***
+
+DEFAULT***create new container group -347 __getrlimit***
+
+DEFAULT***create new container group -348 _IO_new_do_write***
+
+DEFAULT***create new container group -349 _IO_file_underflow***
+
+DEFAULT***create new container group -350 getdelim***
+
+DEFAULT***create new container group -351 __gconv_release_shlib***
+
+DEFAULT***create new container group -352 _nl_make_l10nflist***
+
+DEFAULT***create new container group -353 __fopen_internal***
+
+DEFAULT***create new container group -354 _IO_no_init***
+
+DEFAULT***create new container group -355 __strchrnul***
+
+DEFAULT***create new container group -356 _IO_padn***
+
+DEFAULT***create new container group -357 _IO_file_overflow***
+
+DEFAULT***create new container group -358 memchr***
+
+DEFAULT***create new container group -359 _IO_getline_info***
+
+DEFAULT***create new container group -360 __pthread_initialize_minimal***
+
+DEFAULT***create new container group -361 __bss_end__***
+
+DEFAULT***create new container group -362 ___fxstat64***
+
+DEFAULT***create new container group -363 tfind***
+
+DEFAULT***create new container group -364 _itoa***
+
+DEFAULT***create new container group -365 _dl_runtime_profile***
+
+DEFAULT***create new container group -366 _IO_str_init_static***
+
+DEFAULT***create new container group -367 __libc_open64***
+
+DEFAULT***create new container group -368 __pthread_raise***
+
+DEFAULT***create new container group -369 _dl_dst_substitute***
+
+DEFAULT***create new container group -370 __gconv_close***
+
+DEFAULT***create new container group -371 __wcrtomb***
+
+DEFAULT***create new container group -372 __pthread_mutex_destroy***
+
+DEFAULT***create new container group -373 mktime***
+
+DEFAULT***create new container group -374 _start***
+
+DEFAULT***create new container group -375 __stop___libc_atexit***
+
+DEFAULT***create new container group -376 _IO_flush_all***
+
+DEFAULT***create new container group -377 strstr***
+
+DEFAULT***create new container group -378 _int_realloc***
+
+DEFAULT***create new container group -379 _IO_new_fclose***
+
+DEFAULT***create new container group -380 _IO_iter_file***
+
+DEFAULT***create new container group -381 _IO_adjust_column***
+
+DEFAULT***create new container group -382 _IO_flush_all_lockp***
+
+DEFAULT***create new container group -383 malloc_set_state***
+
+DEFAULT***create new container group -384 __libc_init_first***
+
+DEFAULT***create new container group -385 read***
+
+DEFAULT***create new container group -386 _dl_signal_cerror***
+
+DEFAULT***create new container group -387 __pthread_internal_tsd_get***
+
+DEFAULT***create new container group -388 __readlink***
+
+DEFAULT***create new container group -389 __mpn_extract_double***
+
+DEFAULT***create new container group -390 __argz_count***
+
+DEFAULT***create new container group -391 strncmp***
+
+DEFAULT***create new container group -392 _IO_fprintf***
+
+DEFAULT***create new container group -393 _nl_explode_name***
+
+DEFAULT***create new container group -394 _IO_vfwprintf***
+
+DEFAULT***create new container group -395 _IO_wdefault_doallocate***
+
+DEFAULT***create new container group -396 wcsrtombs***
+
+DEFAULT***create new container group -397 __libc_malloc***
+
+DEFAULT***create new container group -398 __pthread_internal_tsd_address***
+
+DEFAULT***create new container group -399 get_avphys_pages***
+
+DEFAULT***create new container group -400 _IO_marker_delta***
+
+DEFAULT***create new container group -401 __libc_free***
+
+DEFAULT***create new container group -402 setenv***
+
+DEFAULT***create new container group -403 _IO_file_underflow_mmap***
+
+DEFAULT***create new container group -404 _IO_sungetwc***
+
+DEFAULT***create new container group -405 strcasecmp***
+
+DEFAULT***create new container group -406 _wordcopy_bwd_dest_aligned***
+
+DEFAULT***create new container group -407 _IO_str_count***
+
+DEFAULT***create new container group -408 _dl_open***
+
+DEFAULT***create new container group -409 funlockfile***
+
+DEFAULT***create new container group -410 _IO_file_underflow_maybe_mmap***
+
+DEFAULT***create new container group -411 __pvalloc***
+
+DEFAULT***create new container group -412 realloc***
+
+DEFAULT***create new container group -413 addmntent***
+
+DEFAULT***create new container group -414 __getegid***
+
+DEFAULT***create new container group -415 __register_atfork***
+
+DEFAULT***create new container group -416 __libc_siglongjmp***
+
+DEFAULT***create new container group -417 fcloseall***
+
+DEFAULT***create new container group -418 _dl_check_all_versions***
+
+DEFAULT***create new container group -419 _dl_debug_initialize***
+
+DEFAULT***create new container group -420 __tz_convert***
+
+FILE***create new container group 2 qcount***
+
+DEFAULT***create new container group -422 __argz_create_sep***
+
+DEFAULT***create new container group -423 __strdup***
+
+DEFAULT***create new container group -424 __gconv_alias_compare***
+
+DEFAULT***create new container group -425 __cxa_atexit***
+
+DEFAULT***create new container group -426 __wmemmove***
+
+DEFAULT***create new container group -427 _IO_file_xsputn***
+
+DEFAULT***create new container group -428 __brk***
+
+DEFAULT***create new container group -429 _IO_wmarker_delta***
+
+DEFAULT***create new container group -430 wcsnlen***
+
+DEFAULT***create new container group -431 __libc_mallopt***
+
+DEFAULT***create new container group -432 _IO_default_stat***
+
+DEFAULT***create new container group -433 _IO_new_file_sync***
+
+DEFAULT***create new container group -434 memcmp***
+
+DEFAULT***create new container group -435 __profil***
+
+DEFAULT***create new container group -436 __mpn_add_n***
+
+DEFAULT***create new container group -437 malloc_trim***
+
+DEFAULT***create new container group -438 fork***
+
+DEFAULT***create new container group -439 sscanf***
+
+DEFAULT***create new container group -440 __fwprintf***
+
+DEFAULT***create new container group -441 setmntent***
+
+DEFAULT***create new container group -442 __strcasecmp_l***
+
+DEFAULT***create new container group -443 _IO_marker_difference***
+
+DEFAULT***create new container group -444 _dl_get_origin***
+
+DEFAULT***create new container group -445 sigaction***
+
+DEFAULT***create new container group -446 __pthread_mutexattr_init***
+
+DEFAULT***create new container group -447 _IO_free_wbackup_area***
+
+DEFAULT***create new container group -448 endmntent***
+
+DEFAULT***create new container group -449 _nl_remove_locale***
+
+DEFAULT***create new container group -450 __getpagesize***
+
+DEFAULT***create new container group -451 __mbrtowc***
+
+DEFAULT***create new container group -452 _IO_free_backup_area***
+
+DEFAULT***create new container group -453 _IO_file_init***
+
+DEFAULT***create new container group -454 sbrk***
+
+DEFAULT***create new container group -455 __fini_array_start***
+
+DEFAULT***create new container group -456 strdup***
+
+DEFAULT***create new container group -457 __libc_close***
+
+DEFAULT***create new container group -458 __underflow***
+
+DEFAULT***create new container group -459 __gconv_get_builtin_trans***
+
+DEFAULT***create new container group -460 __pthread_internal_tsd_set***
+
+DEFAULT***create new container group -461 __libc_csu_init***
+
+DEFAULT***create new container group -462 __get_nprocs_conf***
+
+DEFAULT***create new container group -463 __gconv_release_step***
+
+DEFAULT***create new container group -464 strtoull***
+
+DEFAULT***create new container group -465 index***
+
+DEFAULT***create new container group -466 _pthread_cleanup_push_defer***
+
+DEFAULT***create new container group -467 fopen***
+
+DEFAULT***create new container group -468 __bss_start***
+
+DEFAULT***create new container group -469 __libc_open***
+
+DEFAULT***create new container group -470 _IO_wdefault_xsputn***
+
+DEFAULT***create new container group -471 __gconv_transform_internal_utf8***
+
+DEFAULT***create new container group -472 localtime***
+
+DEFAULT***create new container group -473 _IO_default_uflow***
+
+DEFAULT***create new container group -474 memset***
+
+DEFAULT***create new container group -475 __wmempcpy***
+
+FILE***create new container group 1 main***
+
+DEFAULT***create new container group -477 _dl_start_profile***
+
+DEFAULT***create new container group -478 __wcsnlen***
+
+DEFAULT***create new container group -479 __div0***
+
+DEFAULT***create new container group -480 _IO_new_file_finish***
+
+DEFAULT***create new container group -481 _int_memalign***
+
+DEFAULT***create new container group -482 _longjmp_unwind***
+
+DEFAULT***create new container group -483 get_phys_pages***
+
+DEFAULT***create new container group -484 vfwprintf***
+
+DEFAULT***create new container group -485 mbsrtowcs***
+
+DEFAULT***create new container group -486 _IO_new_file_attach***
+
+DEFAULT***create new container group -487 mallopt***
+
+DEFAULT***create new container group -488 fclose***
+
+DEFAULT***create new container group -489 open64***
+
+DEFAULT***create new container group -490 _dl_relocate_object***
+
+DEFAULT***create new container group -491 __init_array_end***
+
+DEFAULT***create new container group -492 tcgetattr***
+
+DEFAULT***create new container group -493 __wunderflow***
+
+DEFAULT***create new container group -494 __uflow***
+
+DEFAULT***create new container group -495 _dl_dst_count***
+
+DEFAULT***create new container group -496 _IO_sscanf***
+
+DEFAULT***create new container group -497 __assert_fail***
+
+DEFAULT***create new container group -498 __flockfile***
+
+DEFAULT***create new container group -499 _nl_find_msg***
+
+DEFAULT***create new container group -500 _IO_least_marker***
+
+DEFAULT***create new container group -501 _IO_switch_to_wbackup_area***
+
+DEFAULT***create new container group -502 _IO_list_resetlock***
+
+DEFAULT***create new container group -503 wcschrnul***
+
+DEFAULT***create new container group -504 __end__***
+
+DEFAULT***create new container group -505 fwprintf***
+
+DEFAULT***create new container group -506 __vsscanf***
+
+DEFAULT***create new container group -507 __divsi3***
+
+DEFAULT***create new container group -508 llseek***
+
+DEFAULT***create new container group -509 __lseek***
+
+DEFAULT***create new container group -510 __twalk***
+
+DEFAULT***create new container group -511 _IO_getline***
+
+DEFAULT***create new container group -512 __setmntent***
+
+DEFAULT***create new container group -513 fread_unlocked***
+
+DEFAULT***create new container group -514 strcmp***
+
+DEFAULT***create new container group -515 _IO_wdefault_uflow***
+
+DEFAULT***create new container group -516 __mpn_rshift***
+
+DEFAULT***create new container group -517 __gconv_get_alias_db***
+
+DEFAULT***create new container group -518 __default_sa_restorer***
+
+DEFAULT***create new container group -519 data_start***
+
+DEFAULT***create new container group -520 _nl_find_locale***
+
+DEFAULT***create new container group -521 __memchr***
+
+DEFAULT***create new container group -522 __malloc_check_init***
+
+DEFAULT***create new container group -523 __mbsrtowcs***
+
+DEFAULT***create new container group -524 register_printf_function***
+
+DEFAULT***create new container group -525 __addmntent***
+
+DEFAULT***create new container group -526 __fopen_maybe_mmap***
+
+DEFAULT***create new container group -527 getcwd***
+
+DEFAULT***create new container group -528 __libc_enable_asynccancel***
+
+DEFAULT***create new container group -529 _IO_setb***
+
+DEFAULT***create new container group -530 _fini***
+
+DEFAULT***create new container group -531 _IO_file_fopen***
+
+DEFAULT***create new container group -532 memalign***
+
+DEFAULT***create new container group -533 __mempcpy***
+
+DEFAULT***create new container group -534 _dl_unload_cache***
+
+DEFAULT***create new container group -535 __default_rt_sa_restorer***
+
+DEFAULT***create new container group -536 asprintf***
+
+DEFAULT***create new container group -537 _IO_new_file_setbuf***
+
+DEFAULT***create new container group -538 strerror_r***
+
+DEFAULT***create new container group -539 _IO_wfile_seekoff***
+
+DEFAULT***create new container group -540 __stop___libc_freeres_fn***
+
+DEFAULT***create new container group -541 strtof***
+
+DEFAULT***create new container group -542 _IO_wfile_underflow***
+
+DEFAULT***create new container group -543 _IO_file_doallocate***
+
+DEFAULT***create new container group -544 __wcsrtombs***
+
+DEFAULT***create new container group -545 _int_malloc***
+
+DEFAULT***create new container group -546 _wordcopy_fwd_dest_aligned***
+
+DEFAULT***create new container group -547 __gconv_compare_alias_cache***
+
+DEFAULT***create new container group -548 _IO_init_wmarker***
+
+DEFAULT***create new container group -549 flockfile***
+
+DEFAULT***create new container group -550 setlocale***
+
+DEFAULT***create new container group -551 __getclktck***
+
+DEFAULT***create new container group -552 _int_valloc***
+
+DEFAULT***create new container group -553 _IO_file_read***
+
+DEFAULT***create new container group -554 mmap64***
+
+DEFAULT***create new container group -555 profil***
+
+DEFAULT***create new container group -556 strsep***
+
+DEFAULT***create new container group -557 cfree***
+
+DEFAULT***create new container group -558 __preinit_array_end***
+
+DEFAULT***create new container group -559 isnan***
+
+DEFAULT***create new container group -560 __libc_fork***
+
+DEFAULT***create new container group -561 _IO_vsscanf***
+
+DEFAULT***create new container group -562 timelocal***
+
+DEFAULT***create new container group -563 __strsep_g***
+
+DEFAULT***create new container group -564 valloc***
+
+DEFAULT***create new container group -565 isinfl***
+
+DEFAULT***create new container group -566 _dl_mcount***
+
+DEFAULT***create new container group -567 __libc_lseek***
+
+DEFAULT***create new container group -568 isnanl***
+
+DEFAULT***create new container group -569 _IO_fopen***
+
+DEFAULT***create new container group -570 _dl_mcount_wrapper_check***
+
+DEFAULT***create new container group -571 _IO_wdefault_finish***
+
+DEFAULT***create new container group -572 _IO_new_file_write***
+
+DEFAULT***create new container group -573 mallinfo***
+
+DEFAULT***create new container group -574 __ctype_b_loc***
+
+DEFAULT***create new container group -575 __mremap***
+
+DEFAULT***create new container group -576 __printf_fphex***
+
+DEFAULT***create new container group -577 __strndup***
+
+DEFAULT***create new container group -578 __mbsinit***
+
+DEFAULT***create new container group -579 localtime_r***
+
+DEFAULT***create new container group -580 __tzfile_compute***
+
+DEFAULT***create new container group -581 __gconv_get_modules_db***
+
+DEFAULT***create new container group -582 __uname***
+
+DEFAULT***create new container group -583 _IO_sputbackwc***
+
+DEFAULT***create new container group -584 __gconv_read_conf***
+
+DEFAULT***create new container group -585 __libc_dlclose***
+
+DEFAULT***create new container group -586 twalk***
+
+DEFAULT***create new container group -587 __gconv_close_transform***
+
+FILE***FOOUNDD container group 1 main:foo***
+
+DEFAULT***create new container group -588 _IO_file_attach***
+
+DEFAULT***create new container group -589 argz_create_sep***
+
+DEFAULT***create new container group -590 wmemmove***
+
+DEFAULT***create new container group -591 _IO_unsave_wmarkers***
+
+DEFAULT***create new container group -592 _IO_file_open***
+
+DEFAULT***create new container group -593 _nl_init_domain_conv***
+
+DEFAULT***create new container group -594 _dl_map_object***
+
+DEFAULT***create new container group -595 __mbsnrtowcs***
+
+DEFAULT***create new container group -596 _nl_archive_subfreeres***
+
+DEFAULT***create new container group -597 fwrite***
+
+DEFAULT***create new container group -598 _IO_list_unlock***
+
+DEFAULT***create new container group -599 __close***
+
+DEFAULT***create new container group -600 __fxstat64***
+
+DEFAULT***create new container group -601 __mpn_mul_1***
+
+DEFAULT***create new container group -602 access***
+
+DEFAULT***create new container group -603 __getuid***
+
+DEFAULT***create new container group -604 _edata***
+
+DEFAULT***create new container group -605 _IO_switch_to_get_mode***
+
+DEFAULT***create new container group -606 _end***
+
+DEFAULT***create new container group -607 _IO_vfscanf***
+
+DEFAULT***create new container group -608 _IO_do_write***
+
+DEFAULT***create new container group -609 __strtof_internal***
+
+DEFAULT***create new container group -610 _IO_getdelim***
+
+DEFAULT***create new container group -611 vfscanf***
+
+DEFAULT***create new container group -612 __gconv_release_cache***
+
+DEFAULT***create new container group -613 strtouq***
+
+DEFAULT***create new container group -614 __tzfile_read***
+
+DEFAULT***create new container group -615 __new_fclose***
+
+DEFAULT***create new container group -616 __wuflow***
+
+DEFAULT***create new container group -617 __sysconf***
+
+DEFAULT***create new container group -618 __sigaction***
+
+DEFAULT***create new container group -619 __argz_stringify***
+
+DEFAULT***create new container group -620 __libc_calloc***
+
+DEFAULT***create new container group -621 __isinfl***
+
+DEFAULT***create new container group -622 __gconv_compare_alias***
+
+DEFAULT***create new container group -623 __vfwprintf***
+
+DEFAULT***create new container group -624 __tfind***
+
+DEFAULT***create new container group -625 _IO_default_seekoff***
+
+DEFAULT***create new container group -626 _dl_dprintf***
+
+DEFAULT***create new container group -627 _IO_doallocbuf***
+
+DEFAULT***create new container group -628 _dl_signal_error***
+
+DEFAULT***create new container group -629 _flushlbf***
+
+DEFAULT***create new container group -630 __libc_independent_calloc***
+
+DEFAULT***create new container group -631 __errno_location***
+
+DEFAULT***create new container group -632 get_nprocs***
+
+DEFAULT***create new container group -633 _IO_switch_to_backup_area***
+
+DEFAULT***create new container group -634 exit***
+
+DEFAULT***create new container group -635 __gconv_transform_internal_ucs4le***
+
+DEFAULT***create new container group -636 __munmap***
+
+DEFAULT***create new container group -637 __malloc_usable_size***
+
+DEFAULT***create new container group -638 __gconv_transliterate***
+
+DEFAULT***create new container group -639 __strcasecmp***
+
+DEFAULT***create new container group -640 __modsi3***
+
+DEFAULT***create new container group -641 _IO_wsetb***
+
+DEFAULT***create new container group -642 brk***
+
+DEFAULT***create new container group -643 __tzstring***
+
+DEFAULT***create new container group -644 _IO_vfprintf***
+
+DEFAULT***create new container group -645 __wcsmbs_named_conv***
+
+DEFAULT***create new container group -646 _IO_seekoff***
+
+DEFAULT***create new container group -647 _dl_aux_init***
+
+DEFAULT***create new container group -648 _dl_hwcap***
+
+DEFAULT***create new container group -649 _IO_wfile_doallocate***
+
+DEFAULT***create new container group -650 __init_array_start***
+
+DEFAULT***create new container group -651 __setfpucw***
+
+DEFAULT***create new container group -652 _IO_str_underflow***
+
+DEFAULT***create new container group -653 __sigprocmask***
+
+DEFAULT***create new container group -654 _setjmp***
+
+DEFAULT***create new container group -655 fgets_unlocked***
+
+DEFAULT***create new container group -656 __ctype_toupper_loc***
+
+DEFAULT***create new container group -657 __funlockfile***
+
+FILE***FOOUNDD container group 1 main:bar***
+
+DEFAULT***create new container group -658 _exit***
+
+DEFAULT***create new container group -659 __malloc_set_state***
+
+DEFAULT***create new container group -660 __libc_start_main***
+
+DEFAULT***create new container group -661 strlen***
+
+DEFAULT***create new container group -662 lseek64***
+
+DEFAULT***create new container group -663 open***
+
+DEFAULT***create new container group -664 __libc_dlsym***
+
+DEFAULT***create new container group -665 __libc_write***
+
+DEFAULT***create new container group -666 __vfscanf***
+
+DEFAULT***create new container group -667 __fcntl***
+
+DEFAULT***create new container group -668 _IO_init***
+
+DEFAULT***create new container group -669 __gconv_transform_internal_ucs2reverse***
+
+DEFAULT***create new container group -670 __fork***
+
+DEFAULT***create new container group -671 __setenv***
+
+DEFAULT***create new container group -672 __clearenv***
+
+DEFAULT***create new container group -673 strchr***
+
+DEFAULT***create new container group -674 __realloc***
+
+DEFAULT***create new container group -675 _IO_iter_end***
+
+DEFAULT***create new container group -676 __mallopt***
+
+DEFAULT***create new container group -677 fputs***
+
+DEFsim: command line: /home/eugen/simplescalar-olga-arm-testing/sim-outorder -config simconfig/cache-trace.cfg -containers:traceFileIn simpletest.trace.in -containers:groupingTraceIn simpletest.grouptrace.in -containers:groupingPenalties false -containers:grouping simpletest.grouping.in simpletest.ss 
+
+sim: simulation started @ Mon Sep  8 11:12:00 2008, options follow:
+
+sim-outorder: This simulator implements a very detailed out-of-order issue
+superscalar processor with a two-level memory system and speculative
+execution support.  This simulator is a performance simulator, tracking the
+latency of all pipeline operations.
+
+# -config                     # load configuration from a file
+# -dumpconfig                 # dump configuration to a file
+# -h                    false # print help message    
+# -v                    false # verbose operation     
+# -d                    false # enable debug message  
+# -i                    false # start in Dlite debugger
+-seed                       1 # random number generator seed (0 for timer seed)
+# -q                    false # initialize and terminate immediately
+# -chkpt               <null> # restore EIO trace execution from <fname>
+# -redir:sim           <null> # redirect simulator output to file (non-interactive only)
+# -redir:prog    simpletest.progoutput # redirect simulated program output to file
+# -redir:trace         <null> # redirect simulation trace to file 
+# -containers:traceFileOut simpletest.trace.out # this is for the first run, this is where the trace information is stored for the second run
+# -containers:traceFileIn simpletest.trace.in # this is the second run, after the trace data is gathered, the param is the trace file name
+# -containers:compileTraceOut simpletest.trace.compiler # this information is used for the second compilation, it marks the functions that access heap memory
+# -containers:FullTraceOut simpletest.trace.full # this file has the full trace of functions and memory calls (it gets HUGE) use for debug only
+# -containers:grouping simpletest.grouping.in # this file has grouping of functions into containers, if not specified every function will be placed into individual containers
+# -containers:groupingTraceOut       <null> # this file writes the trace out for the grouping of functions into containers
+# -containers:groupingTraceIn simpletest.grouptrace.in # this is the second run, after the trace data is gathered, the param is the trace file name for the container grouping
+# -containers:groupingPenalties        false # if set to true the container groups penalties are used instead of the individual functions ( which is the default)
+-nice                       0 # simulator scheduling priority
+-max:inst                   0 # maximum number of inst's to execute
+# -ptracepipe               0 # The pipe for the ptrace communications
+-profile                false # look for areas with significant IPCs
+-fastfwd                    0 # number of insts skipped before timing starts
+# -ptrace              <null> # generate pipetrace, i.e., <fname|stdout|stderr> <range>
+-fetch:ifqsize              1 # instruction fetch queue size (in insts)
+-fetch:mplat                3 # extra branch mis-prediction latency
+-fetch:speed                1 # speed of front-end of machine relative to execution core
+-bpred                  bimod # branch predictor type {nottaken|taken|perfect|bimod|2lev|comb}
+-bpred:bimod     2048 # bimodal predictor config (<table size>)
+-bpred:2lev      1 1024 8 0 # 2-level predictor config (<l1size> <l2size> <hist_size> <xor>)
+-bpred:comb      1024 # combining predictor config (<meta_table_size>)
+-bpred:ras                  8 # return address stack size (0 for no return stack)
+-bpred:btb       512 4 # BTB config (<num_sets> <associativity>)
+# -bpred:spec_update       <null> # speculative predictors update in {ID|WB} (default non-spec)
+-decode:width               4 # instruction decode B/W (insts/cycle)
+-issue:width                4 # instruction issue B/W (insts/cycle)
+-issue:inorder           true # run pipeline with in-order issue
+-issue:wrongpath        false # issue instructions down wrong execution paths
+-commit:width               4 # instruction commit B/W (insts/cycle)
+-ruu:size                  16 # register update unit (RUU) size
+-lsq:size                   8 # load/store queue (LSQ) size
+-lsq:perfect            false # perfect memory disambiguation
+-cache:dl1       dl1:16:32:64:l # l1 data cache config, i.e., {<config>|none}
+-cache:dl1lat               1 # l1 data cache hit latency (in cycles)
+-cache:dl2               none # l2 data cache config, i.e., {<config>|none}
+-cache:dl2lat               1 # l2 data cache hit latency (in cycles)
+-cache:il1       il1:32:32:32:l # l1 inst cache config, i.e., {<config>|dl1|dl2|none}
+-cache:cont_il1  il1:512:32:1:l # l1 container permission cache config, i.e., {<config>|none}
+-cache:il1lat               1 # l1 instruction cache hit latency (in cycles)
+-cache:il2               none # l2 instruction cache config, i.e., {<config>|dl2|none}
+-cache:il2lat               1 # l2 instruction cache hit latency (in cycles)
+-cache:flush            false # flush caches on system calls
+-cache:icompress        false # convert 64-bit inst addresses to 32-bit inst equivalents
+-mem:lat         15 2 # memory access latency (<first_chunk> <inter_chunk>)
+-mem:width                  8 # memory access bus width (in bytes)
+-mem:pipelined          false # memory accesses are fully pipelined
+-tlb:itlb        itlb:16:4096:4:l # instruction TLB config, i.e., {<config>|none}
+-tlb:dtlb        dtlb:32:4096:4:l # data TLB config, i.e., {<config>|none}
+-tlb:lat                   30 # inst/data TLB miss latency (in cycles)
+-res:ialu                   2 # total number of integer ALU's available
+-res:imult                  1 # total number of integer multiplier/dividers available
+-res:memport                1 # total number of memory system ports available (to CPU)
+-res:fpalu                  1 # total number of floating point ALU's available
+-res:fpmult                 1 # total number of floating point multiplier/dividers available
+# -pcstat              <null> # profile stat(s) against text addr's (mult uses ok)
+-bugcompat              false # operate in backward-compatible bugs mode (for testing only)
+
+  Pipetrace range arguments are formatted as follows:
+
+    {{@|#}<start>}:{{@|#|+}<end>}
+
+  Both ends of the range are optional, if neither are specified, the entire
+  execution is traced.  Ranges that start with a `@' designate an address
+  range to be traced, those that start with an `#' designate a cycle count
+  range.  All other range values represent an instruction count range.  The
+  second argument, if specified with a `+', indicates a value relative
+  to the first argument, e.g., 1000:+100 == 1000:1100.  Program symbols may
+  be used in all contexts.
+
+    Examples:   -ptrace FOO.trc #0:#1000
+                -ptrace BAR.trc @2000:
+                -ptrace BLAH.trc :1500
+                -ptrace UXXE.trc :
+                -ptrace FOOBAR.trc @main:+278
+
+  Branch predictor configuration examples for 2-level predictor:
+    Configurations:   N, M, W, X
+      N   # entries in first level (# of shift register(s))
+      W   width of shift register(s)
+      M   # entries in 2nd level (# of counters, or other FSM)
+      X   (yes-1/no-0) xor history and address for 2nd level index
+    Sample predictors:
+      GAg     : 1, W, 2^W, 0
+      GAp     : 1, W, M (M > 2^W), 0
+      PAg     : N, W, 2^W, 0
+      PAp     : N, W, M (M == 2^(N+W)), 0
+      gshare  : 1, W, 2^W, 1
+  Predictor `comb' combines a bimodal and a 2-level predictor.
+
+  The cache config parameter <config> has the following format:
+
+    <name>:<nsets>:<bsize>:<assoc>:<repl>
+
+    <name>   - name of the cache being defined
+    <nsets>  - number of sets in the cache
+    <bsize>  - block size of the cache
+    <assoc>  - associativity of the cache
+    <repl>   - block replacement strategy, 'l'-LRU, 'f'-FIFO, 'r'-random
+
+    Examples:   -cache:dl1 dl1:4096:32:1:l
+                -dtlb dtlb:128:4096:32:r
+
+  Cache levels can be unified by pointing a level of the instruction cache
+  hierarchy at the data cache hiearchy using the "dl1" and "dl2" cache
+  configuration arguments.  Most sensible combinations are supported, e.g.,
+
+    A unified l2 cache (il2 is pointed at dl2):
+      -cache:il1 il1:128:64:1:l -cache:il2 dl2
+      -cache:dl1 dl1:256:32:1:l -cache:dl2 ul2:1024:64:2:l
+
+    Or, a fully unified cache hierarchy (il1 pointed at dl1):
+      -cache:il1 dl1
+      -cache:dl1 ul1:256:32:1:l -cache:dl2 ul2:1024:64:2:l
+
+
+
+sim: ** starting performance simulation **
+warning: cache: access error: access spans block, addr 0x000082f8
+warning: invalid/unimplemented syscall 122, PC=0x0000f1f0, winging it
+warning: invalid/unimplemented syscall 221, PC=0x0000f3c4, winging it
+AULT***create new container group -678 _quicksort***
+
+DEFAULT***create new container group -679 _IO_new_file_underflow***
+
+DEFAULT***create new container group -680 __data_start***
+
+DEFAULT***create new container group -681 __malloc_get_state***
+
+DEFAULT***create new container group -682 __libc_fatal***
+
+DEFAULT***create new container group -683 __get_phys_pages***
+
+DEFAULT***create new container group -684 __sbrk***
+
+DEFAULT***create new container group -685 mprotect***
+
+DEFAULT***create new container group -686 _IO_default_seek***
+
+DEFAULT***create new container group -687 __tdelete***
+
+DEFAULT***create new container group -688 __access***
+
+DEFAULT***create new container group -689 __malloc_stats***
+
+DEFAULT***create new container group -690 _IO_wdefault_pbackfail***
+
+DEFAULT***create new container group -691 _Jv_RegisterClasses***
+
+DEFAULT***create new container group -692 __argz_add_sep***
+
+DEFAULT***create new container group -693 _IO_new_file_overflow***
+
+DEFAULT***create new container group -694 __libc_dlopen_mode***
+
+DEFAULT***create new container group -695 __unsetenv***
+
+DEFAULT***create new container group -696 _IO_new_file_seekoff***
+
+DEFAULT***create new container group -697 __mktime_internal***
+
+DEFAULT***create new container group -698 vasprintf***
+
+DEFAULT***create new container group -699 _dl_sysdep_read_whole_file***
+
+DEFAULT***create new container group -700 strchrnul***
+
+DEFAULT***create new container group -701 __preinit_array_start***
+
+DEFAULT***create new container group -702 fcntl***
+
+DEFAULT***create new container group -703 tzset***
+
+DEFAULT***create new container group -704 __get_avphys_pages***
+
+DEFAULT***create new container group -705 __open64***
+
+DEFAULT***create new container group -706 _dl_catch_error***
+
+DEFAULT***create new container group -707 _IO_un_link***
+
+DEFAULT***create new container group -708 _IO_file_setbuf_mmap***
+
+DEFAULT***create new container group -709 get_nprocs_conf***
+
+DEFAULT***create new container group -710 _IO_default_pbackfail***
+
+DEFAULT***create new container group -711 posix_memalign***
+
+DEFAULT***create new container group -712 wcrtomb***
+
+DEFAULT***create new container group -713 __new_fopen***
+
+DEFAULT***create new container group -714 close***
+
+DEFAULT***create new container group -715 __wmemcpy***
+
+DEFAULT***create new container group -716 _IO_iter_next***
+
+DEFAULT***create new container group -717 __valloc***
+
+DEFAULT***create new container group -718 __geteuid***
+
+DEFAULT***create new container group -719 _wordcopy_bwd_aligned***
+
+DEFAULT***create new container group -720 vfprintf***
+
+DEFAULT***create new container group -721 strpbrk***
+
+DEFAULT***create new container group -722 _IO_switch_to_main_get_area***
+
+DEFAULT***create new container group -723 raise***
+
+DEFAULT***create new container group -724 _IO_seekmark***
+
+DEFAULT***create new container group -725 free***
+
+DEFAULT***create new container group -726 _nl_free_domain_conv***
+
+DEFAULT***create new container group -727 sigprocmask***
+
+DEFAULT***create new container group -728 __gmon_start__***
+
+DEFAULT***create new container group -729 __start___libc_freeres_fn***
+
+DEFAULT***create new container group -730 mbsinit***
+
+DEFAULT***create new container group -731 _dl_map_object_deps***
+
+DEFAULT***create new container group -732 _nl_load_locale_from_archive***
+FUNCTION: 5 0 _start
+GROUP   : -1 -1 _start
+FUNCTION: 19 0 __libc_start_main
+GROUP   : 19 0 __libc_start_main
+FUNCTION: 4 0 _dl_aux_init
+GROUP   : 4 0 _dl_aux_init
+FUNCTION: 6 0 uname
+GROUP   : 6 0 uname
+FUNCTION: 12 0 __errno_location
+GROUP   : 12 0 __errno_location
+FUNCTION: 5 0 __open
+GROUP   : 5 0 __open
+FUNCTION: 5 0 __read
+GROUP   : 5 0 __read
+FUNCTION: 4 0 __libc_close
+GROUP   : 4 0 __libc_close
+FUNCTION: 7 0 __libc_check_standard_fds
+GROUP   : 7 0 __libc_check_standard_fds
+FUNCTION: 9 0 __libc_fcntl
+GROUP   : 9 0 __libc_fcntl
+FUNCTION: 12 0 __errno_location
+GROUP   : 12 0 __errno_location
+FUNCTION: 12 0 __errno_location
+GROUP   : 12 0 __errno_location
+FUNCTION: 12 0 __errno_location
+GROUP   : 12 0 __errno_location
+FUNCTION: 9 0 __libc_fcnwarning: invalid/unimplemented syscall 221, PC=0x0000f3c4, winging it
+warning: invalid/unimplemented syscall 221, PC=0x0000f3c4, winging it
+warning: invalid/unimplemented syscall 201, PC=0x0001faf8, winging it
+warning: invalid/unimplemented syscall 199, PC=0x0001faf0, winging it
+warning: invalid/unimplemented syscall 202, PC=0x0001fb08, winging it
+warning: invalid/unimplemented syscall 200, PC=0x0001fb00, winging it
+warning: invalid/unimplemented syscall 197, PC=0x0000f238, winging it
+tl
+GROUP   : 9 0 __libc_fcntl
+FUNCTION: 12 0 __errno_location
+GROUP   : 12 0 __errno_location
+FUNCTION: 12 0 __errno_location
+GROUP   : 12 0 __errno_location
+FUNCTION: 12 0 __errno_location
+GROUP   : 12 0 __errno_location
+FUNCTION: 9 0 __libc_fcntl
+GROUP   : 9 0 __libc_fcntl
+FUNCTION: 12 0 __errno_location
+GROUP   : 12 0 __errno_location
+FUNCTION: 12 0 __errno_location
+GROUP   : 12 0 __errno_location
+FUNCTION: 12 0 __errno_location
+GROUP   : 12 0 __errno_location
+FUNCTION: 12 0 __libc_init_first
+GROUP   : 12 0 __libc_init_first
+FUNCTION: 3 0 __setfpucw
+GROUP   : 3 0 __setfpucw
+FUNCTION: 9 0 __libc_init_secure
+GROUP   : 9 0 __libc_init_secure
+FUNCTION: 3 0 geteuid
+GROUP   : 3 0 geteuid
+FUNCTION: 3 0 getuid
+GROUP   : 3 0 getuid
+FUNCTION: 3 0 getegid
+GROUP   : 3 0 getegid
+FUNCTION: 3 0 getgid
+GROUP   : 3 0 getgid
+FUNCTION: 10 0 _dl_non_dynamic_init
+GROUP   : 10 0 _dl_non_dynamic_init
+FUNCTION: 5 0 getpagesize
+GROUP   : 5 0 getpagesize
+FUNCTION: 12 0 getenv
+GROUP   : 12 0 getenv
+FUNCTION: 5 0 strlen
+GROUP   : 5 0 strlen
+FUNCTION: 12 0 getenv
+GROUP   : 12 0 getenv
+FUNCTION: 5 0 strlen
+GROUP   : 5 0 strlen
+FUNCTION: 32 0 _dl_init_paths
+GROUP   : 32 0 _dl_init_paths
+FUNCTION: 5 0 _dl_important_hwcaps
+GROUP   : 5 0 _dl_important_hwcaps
+FUNCTION: 21 0 malloc
+GROUP   : 21 0 malloc
+FUNCTION: 5 0 getpagesize
+GROUP   : 5 0 getpagesize
+FUNCTION: 6 0 __register_atfork
+GROUP   : 6 0 __register_atfork
+FUNCTION: 21 0 malloc
+GROUP   : 21 0 malloc
+FUNCTION: 16 0 _int_malloc
+GROUP   : 16 0 _int_malloc
+FUNCTION: 6 0 __default_morecore
+GROUP   : 6 0 __default_morecore
+FUNCTION: 7 0 sbrk
+GROUP   : 7 0 sbrk
+FUNCTION: 5 0 __brk
+GROUP   : 5 0 __brk
+FUNCTION: 5 0 __brk
+GROUP   : 5 0 __brk
+FUNCTION: 6 0 __default_morecore
+GROUP   : 6 0 __default_morecore
+FUNCTION: 7 0 sbrk
+GROUP   : 7 0 sbrk
+FUNCTION: 21 -2 malloc
+GROUP   : 21 -2 malloc
+FUNCTION: 16 -2 _int_malloc
+GROUP   : 16 -2 _int_malloc
+FUNCTION: 21 -2 malloc
+GROUP   : 21 -2 malloc
+FUNCTION: 16 -2 _int_malloc
+GROUP   : 16 -2 _int_malloc
+FUNCTION: 21 -4 malloc
+GROUP   : -1 -1 malloc
+FUNCTION: 16 -4 _int_malloc
+GROUP   : 16 -4 _int_malloc
+FUNCTION: 21 0 malloc
+GROUP   : 21 0 malloc
+FUNCTION: 16 -5 _int_malloc
+GROUP   : 16 -5 _int_malloc
+FUNCTION: 12 -3 getenv
+GROUP   : 12 -3 getenv
+FUNCTION: 5 0 strlen
+GROUP   : 5 0 strlen
+FUNCTION: 12 -3 getenv
+GROUP   : 12 -3 getenv
+FUNCTION: 5 0 strlen
+GROUP   : 5 0 strlen
+FUNCTION: 12 -3 getenv
+GROUP   : 12 -3 getenv
+FUNCTION: 5 0 strlen
+GROUP   : 5 0 strlen
+FUNCTION: 12 -3 getenv
+GROUP   : 12 -3 getenv
+FUNCTION: 5 0 strlen
+GROUP   : 5 0 strlen
+FUNCTION: 6 -3 __init_misc
+GROUP   : 6 -3 __init_misc
+FUNCTION: 5 0 strrchr
+GROUP   : 5 0 strrchr
+FUNCTION: 4 0 index
+GROUP   : 4 0 index
+FUNCTION: 6 -3 __cxa_atexit
+GROUP   : 6 -3 __cxa_atexit
+FUNCTION: 6 0 __new_exitfn
+GROUP   : 6 0 __new_exitfn
+FUNCTION: 5 -3 __libc_csu_init
+GROUP   : 5 -3 __libc_csu_init
+FUNCTION: 7 0 _init
+GROUP   : 7 0 _init
+FUNCTION: 6 -3 main
+GROUP   : 11 -3 main
+FUNCTION: 6 0 foo
+GROUP   : 11 0 foo
+FUNCTION: 7 0 printf
+GROUP   : 7 0 printf
+FUNCTION: 22 0 _IO_vfprintf
+GROUP   : 22 0 _IO_vfprintf
+FUNCTION: 12 0 __errno_location
+GROUP   : 12 0 __errno_location
+FUNCTION: 10 0 _IO_flockfile
+GROUP   : 10 0 _IO_flockfile
+FUNCTION: 12 0 _IO_new_file_xsputn
+GROUP   : 12 0 _IO_new_file_xsputn
+FUNCTION: 10 0 _IO_file_overflow
+GROUP   : 10 0 _IO_file_overflow
+FUNCTION: 9 0 _IO_doallocbuf
+GROUP   : 9 0 _IO_doallocbuf
+FUNCTION: 11 0 _IO_file_doallocate
+GROUP   : 11 0 _IO_file_doallocate
+FUNCTION: 6 0 _IO_file_stat
+GROUP   : 6 0 _IO_file_stat
+FUNCTION: 6 0 ___fxstat64
+GROUP   : 6 0 ___fxstat64
+FUNCTION: 12 0 __errno_location
+GROUP   : 12 0 __errno_location
+FUNCTION: 3 0 __mmap
+GROUP   : 3 0 __mmap
+FUNCTION: 8 0 _IO_setb
+GROUP   : 8 0 _IO_setb
+FUNCTION: 11 0 _IO_new_do_write
+GROUP   : 11 0 _IO_new_do_write
+FUNCTION: 3 0 __umodsi3
+GROUP   : 3 0 __umodsi3
+FUNCTION: 6 0 _IO_default_xsputn
+GROUP   : 6 0 _IO_default_xsputn
+FUNCTION: 8 -1 _IO_funlockfile
+GROUP   : 8 -1 _IO_funlockfile
+FUNCTION: 21 -1 malloc
+GROUP   : 21 -1 malloc
+FUNCTION: 16 -5 _int_malloc
+GROUP   : 16 -5 _int_malloc
+FUNCTION: 7 -3 bar
+GROUP   : 11 -3 bar
+FUNCTION: 5 0 qcount
+GROUP   : 5 0 qcount
+FUNCTION: 5 0 qcount
+GROUP   : 5 0 qcount
+FUNCTION: 6 0 foo
+GROUP   : 11 0 foo
+FUNCTION: 7 -3 printf
+GROUP   : 7 -3 printf
+FUNCTION: 22 -1 _IO_vfprintf
+GROUP   : 22 -1 _IO_vfprintf
+FUNCTION: 12 -1 __errno_location
+GROUP   : 12 -1 __errno_location
+FUNCTION: 10 -1 _IO_flockfile
+GROUP   : 10 -1 _IO_flockfile
+FUNCTION: 12 -1 _IO_new_file_xsputn
+GROUP   : 12 -1 _IO_new_file_xsputn
+FUNCTION: 8 -1 _IO_funlockfile
+GROUP   : 8 -1 _IO_funlockfile
+FUNCTION: 21 -3 malloc
+GROUP   : 21 -3 malloc
+FUNCTION: 16 -5 _int_malloc
+GROUP   : 16 -5 _int_malloc
+FUNCTION: 5 -3 qcount
+GROUP   : 5 -3 qcount
+FUNCTION: 6 -3 foo
+GROUP   : 11 -3 foo
+FUNCTION: 7 -3 printf
+GROUP   : 7 -3 printf
+FUNCTION: 22 -1 _IO_vfprintf
+GROUP   : 22 -1 _IO_vfprintf
+FUNCTION: 12 -1 __errno_location
+GROUP   : 12 -1 __errno_location
+FUNCTION: 10 -1 _IO_flockfile
+GROUP   : 10 -1 _IO_flockfile
+FUNCTION: 12 -1 _IO_new_file_xsputn
+GROUP   : 12 -1 _IO_new_file_xsputn
+FUNCTION: 8 -1 _IO_funlockfile
+GROUP   : 8 -1 _IO_funlockfile
+FUNCTION: 21 -3 malloc
+GROUP   : 21 -3 malloc
+FUNCTION: 16 -5 _int_malloc
+GROUP   : 16 -5 _int_malloc
+FUNCTION: 5 -3 qcount
+GROUP   : 5 -3 qcount
+FUNCTION: 6 -3 foo
+GROUP   : 11 -3 foo
+FUNCTION: 7 -3 printf
+GROUP   : 7 -3 printf
+FUNCTION: 22 -1 _IO_vfprintf
+GROUP   : 22 -1 _IO_vfprintf
+FUNCTION: 12 -1 __errno_location
+GROUP   : 12 -1 __errno_location
+FUNCTION: 10 -1 _IO_flockfile
+GROUP   : 10 -1 _IO_flockfile
+FUNCTION: 12 -1 _IO_new_file_xsputn
+GROUP   : 12 -1 _IO_new_file_xsputn
+FUNCTION: 8 -1 _IO_funlockfile
+GROUP   : 8 -1 _IO_funlockfile
+FUNCTION: 21 -3 malloc
+GROUP   : 21 -3 malloc
+FUNCTION: 16 -5 _int_malloc
+GROUP   : 16 -5 _int_malloc
+FUNCTION: 5 -3 qcount
+GROUP   : 5 -3 qcount
+FUNCTION: 6 -3 foo
+GROUP   : 11 -3 foo
+FUNCTION: 7 -3 printf
+GROUP   : 7 -3 printf
+FUNCTION: 22 -1 _IO_vfprintf
+GROUP   : 22 -1 _IO_vfprintf
+FUNCTION: 12 -1 __errno_location
+GROUP   : 12 -1 __errno_location
+FUNCTION: 10 -1 _IO_flockfile
+GROUP   : 10 -1 _IO_flockfile
+FUNCTION: 12 -1 _IO_new_file_xsputn
+GROUP   : 12 -1 _IO_new_file_xsputn
+FUNCTION: 8 -1 _IO_funlockfile
+GROUP   : 8 -1 _IO_funlockfile
+FUNCTION: 21 -3 malloc
+GROUP   : 21 -3 malloc
+FUNCTION: 16 -5 _int_malloc
+GROUP   : 16 -5 _int_malloc
+FUNCTION: 5 -3 qcount
+GROUP   : 5 -3 qcount
+FUNCTION: 6 -3 foo
+GROUP   : 11 -3 foo
+FUNCTION: 7 -3 printf
+GROUP   : 7 -3 printf
+FUNCTION: 22 -1 _IO_vfprintf
+GROUP   : 22 -1 _IO_vfprintf
+FUNCTION: 12 -1 __errno_location
+GROUP   : 12 -1 __errno_location
+FUNCTION: 10 -1 _IO_flockfile
+GROUP   : 10 -1 _IO_flockfile
+FUNCTION: 12 -1 _IO_new_file_xsputn
+GROUP   : 12 -1 _IO_new_file_xsputn
+FUNCTION: 8 -1 _IO_funlockfile
+GROUP   : 8 -1 _IO_funlockfile
+FUNCTION: 21 -3 malloc
+GROUP   : 21 -3 malloc
+FUNCTION: 16 -5 _int_malloc
+GROUP   : 16 -5 _int_malloc
+FUNCTION: 5 -3 qcount
+GROUP   : 5 -3 qcount
+FUNCTION: 6 -3 foo
+GROUP   : 11 -3 foo
+FUNCTION: 7 -3 printf
+GROUP   : 7 -3 printf
+FUNCTION: 22 -1 _IO_vfprintf
+GROUP   : 22 -1 _IO_vfprintf
+FUNCTION: 12 -1 __errno_location
+GROUP   : 12 -1 __errno_location
+FUNCTION: 10 -1 _IO_flockfile
+GROUP   : 10 -1 _IO_flockfile
+FUNCTION: 12 -1 _IO_new_file_xsputn
+GROUP   : 12 -1 _IO_new_file_xsputn
+FUNCTION: 8 -1 _IO_funlockfile
+GROUP   : 8 -1 _IO_funlockfile
+FUNCTION: 21 -3 malloc
+GROUP   : 21 -3 malloc
+FUNCTION: 16 -5 _int_malloc
+GROUP   : 16 -5 _int_malloc
+FUNCTION: 5 -3 qcount
+GROUP   : 5 -3 qcount
+FUNCTION: 6 -3 foo
+GROUP   : 11 -3 foo
+FUNCTION: 7 -3 printf
+GROUP   : 7 -3 printf
+FUNCTION: 22 -1 _IO_vfprintf
+GROUP   : 22 -1 _IO_vfprintf
+FUNCTION: 12 -1 __errno_location
+GROUP   : 12 -1 __errno_location
+FUNCTION: 10 -1 _IO_flockfile
+GROUP   : 10 -1 _IO_flockfile
+FUNCTION: 12 -1 _IO_new_file_xsputn
+GROUP   : 12 -1 _IO_new_file_xsputn
+FUNCTION: 8 -1 _IO_funlockfile
+GROUP   : 8 -1 _IO_funlockfile
+FUNCTION: 21 -3 malloc
+GROUP   : 21 -3 malloc
+FUNCTION: 16 -5 _int_malloc
+GROUP   : 16 -5 _int_malloc
+FUNCTION: 5 -3 qcount
+GROUP   : 5 -3 qcount
+FUNCTION: 6 -3 foo
+GROUP   : 11 -3 foo
+FUNCTION: 7 -3 printf
+GROUP   : 7 -3 printf
+FUNCTION: 22 -1 _IO_vfprintf
+GROUP   : 22 -1 _IO_vfprintf
+FUNCTION: 12 -1 __errno_location
+GRaafooaafooaafooaafooaafooaafooaafooaafooaafooaafooaafoowarning: invalid/unimplemented syscall 91, PC=0x0000f6b0, winging it
+
+sim: ** simulation statistics **
+sim_num_insn                  13045 # total number of instructions committed
+sim_num_uops                  21433 # total number of UOPs executed
+sim_avg_flowlen              1.6430 # uops per instruction
+sim_num_refs                   5793 # total number of loads and stores committed
+sim_num_loads                  3928 # total number of loads committed
+sim_num_stores            1865.0000 # total number of stores committed
+sim_num_branches               2302 # total number of branches committed
+sim_elapsed_time                  1 # total simulation time in seconds
+sim_inst_rate            13045.0000 # simulation speed (in insts/sec)
+sim_total_insn                21432 # total number of instructions executed
+sim_total_refs                 5793 # total number of loads and stores executed
+sim_total_loads                3928 # total number of loads executed
+sim_total_stores          1865.0000 # total number of stores executed
+sim_total_branches             2302 # total number of branches executed
+sim_cycle                     39272 # total simulation time in cycles
+sim_IPC                      0.3322 # instructions per cycle
+sim_CPI                      3.0105 # cycles per instruction
+sim_exec_BW                  0.5457 # total instructions (mis-spec + committed) per cycle
+sim_IPB                      5.6668 # instruction per branch
+IFQ_count                     20796 # cumulative IFQ occupancy
+IFQ_fcount                    20796 # cumulative IFQ full count
+ifq_occupancy                0.5295 # avg IFQ occupancy (insn's)
+ifq_rate                     0.5457 # avg IFQ dispatch rate (insn/cycle)
+ifq_latency                  0.9703 # avg IFQ occupant latency (cycle's)
+ifq_full                     0.5295 # fraction of time (cycle's) IFQ was full
+RUU_count                     59279 # cumulative RUU occupancy
+RUU_fcount                        0 # cumulative RUU full count
+ruu_occupancy                1.5094 # avg RUU occupancy (insn's)
+ruu_rate                     0.5457 # avg RUU dispatch rate (insn/cycle)
+ruu_latency                  2.7659 # avg RUU occupant latency (cycle's)
+ruu_full                     0.0000 # fraction of time (cycle's) RUU was full
+LSQ_count                     28767 # cumulative LSQ occupancy
+LSQ_fcount                      343 # cumulative LSQ full count
+lsq_occupancy                0.7325 # avg LSQ occupancy (insn's)
+lsq_rate                     0.5457 # avg LSQ dispatch rate (insn/cycle)
+lsq_latency                  1.3422 # avg LSQ occupant latency (cycle's)
+lsq_full                     0.0087 # fraction of time (cycle's) LSQ was full
+sim_slip                     147218 # total number of slip cycles
+avg_sim_slip                11.2854 # the average slip between issue and retirement
+bpred_bimod.lookups            2313 # total number of bpred lookups
+bpred_bimod.updates            2302 # total number of updates
+bpred_bimod.addr_hits          1961 # total number of address-predicted hits
+bpred_bimod.dir_hits           2067 # total number of direction-predicted hits (includes addr-hits)
+bpred_bimod.misses              235 # total number of misses
+bpred_bimod.jr_hits               0 # total number of address-predicted hits for JR's
+bpred_bimod.jr_seen               0 # total number of JR's seen
+bpred_bimod.jr_non_ras_hits.PP            0 # total number of address-predicted hits for non-RAS JR's
+bpred_bimod.jr_non_ras_seen.PP            0 # total number of non-RAS JR's seen
+bpred_bimod.bpred_addr_rate    0.8519 # branch address-prediction rate (i.e., addr-hits/updates)
+bpred_bimod.bpred_dir_rate    0.8979 # branch direction-prediction rate (i.e., all-hits/updates)
+bpred_bimod.bpred_jr_rate <error: divide by zero> # JR address-prediction rate (i.e., JR addr-hits/JRs seen)
+bpred_bimod.bpred_jr_non_ras_rate.PP <error: divide by zero> # non-RAS JR addr-pred rate (ie, non-RAS JR hits/JRs seen)
+bpred_bimod.retstack_pushes          232 # total number of address pushed onto ret-addr stack
+bpred_bimod.retstack_pops            0 # total number of address popped off of ret-addr stack
+bpred_bimod.used_ras.PP            0 # total number of RAS predictions used
+bpred_bimod.ras_hits.PP            0 # total number of RAS hits
+bpred_bimod.ras_rate.PP <error: divide by zero> # RAS prediction rate (i.e., RAS hits/used RAS)
+il1.accesses                  13583 # total number of accesses
+il1.hits                      13211 # total number of hits
+il1.misses                      372 # total number of misses
+il1.replacements                  0 # total number of replacements
+il1.writebacks                    0 # total number of writebacks
+il1.invalidations                 0 # total number of invalidations
+il1.miss_rate                0.0274 # miss rate (i.e., misses/ref)
+il1.repl_rate                0.0000 # replacement rate (i.e., repls/ref)
+il1.wb_rate                  0.0000 # writeback rate (i.e., wrbks/ref)
+il1.inv_rate                 0.0000 # invalidation rate (i.e., invs/ref)
+dl1.accesses                   5788 # total number of accesses
+dl1.hits                       5537 # total number of hits
+dl1.misses                      251 # total number of misses
+dl1.replacements                  0 # total number of replacements
+dl1.writebacks                    0 # total number of writebacks
+dl1.invalidations                 0 # total number of invalidations
+dl1.miss_rate                0.0434 # miss rate (i.e., misses/ref)
+dl1.repl_rate                0.0000 # replacement rate (i.e., repls/ref)
+dl1.wb_rate                  0.0000 # writeback rate (i.e., wrbks/ref)
+dl1.inv_rate                 0.0000 # invalidation rate (i.e., invs/ref)
+itlb.accesses                 13583 # total number of accesses
+itlb.hits                     13562 # total number of hits
+itlb.misses                      21 # total number of misses
+itlb.replacements                 0 # total number of replacements
+itlb.writebacks                   0 # total number of writebacks
+itlb.invalidations                0 # total number of invalidations
+itlb.miss_rate               0.0015 # miss rate (i.e., misses/ref)
+itlb.repl_rate               0.0000 # replacement rate (i.e., repls/ref)
+itlb.wb_rate                 0.0000 # writeback rate (i.e., wrbks/ref)
+itlb.inv_rate                0.0000 # invalidation rate (i.e., invs/ref)
+dtlb.accesses                  5793 # total number of accesses
+dtlb.hits                      5771 # total number of hits
+dtlb.misses                      22 # total number of misses
+dtlb.replacements                 0 # total number of replacements
+dtlb.writebacks                   0 # total number of writebacks
+dtlb.invalidations                0 # total number of invalidations
+dtlb.miss_rate               0.0038 # miss rate (i.e., misses/ref)
+dtlb.repl_rate               0.0000 # replacement rate (i.e., repls/ref)
+dtlb.wb_rate                 0.0000 # writeback rate (i.e., wrbks/ref)
+dtlb.inv_rate                0.0000 # invalidation rate (i.e., invs/ref)
+sim_invalid_addrs                 0 # total non-speculative bogus addresses seen (debug var)
+ld_text_base           0x000080b4 # program text (code) segment base
+ld_text_bound          0x00055870 # program text (code) segment bound
+ld_text_size                 317372 # program text (code) size in bytes
+ld_data_base           0x00055870 # program initialized data segment base
+ld_data_bound          0x00069e48 # program initialized data segment bound
+ld_data_size                  83416 # program init'ed `.data' and uninit'ed `.bss' size in bytes
+ld_stack_base          0xc0000000 # program stack segment base (highest address in stack)
+ld_stack_size                 16384 # program initial stack size
+ld_prog_entry          0x000080d0 # program entry point (initial PC)
+ld_environ_base        0xbfffc000 # program environment base address address
+ld_target_big_endian              0 # target executable endian-ness, non-zero if big endian
+mem.page_count                  102 # total number of pages allocated
+mem.page_mem                   408k # total size of memory pages allocated
+mem.ptab_misses                 102 # total first level page table misses
+mem.ptab_accesses            862276 # total page table accesses
+mem.ptab_miss_rate           0.0001 # first level page table miss rate
+
+OUP   : 12 -1 __errno_location
+FUNCTION: 10 -1 _IO_flockfile
+GROUP   : 10 -1 _IO_flockfile
+FUNCTION: 12 -1 _IO_new_file_xsputn
+GROUP   : 12 -1 _IO_new_file_xsputn
+FUNCTION: 8 -1 _IO_funlockfile
+GROUP   : 8 -1 _IO_funlockfile
+FUNCTION: 21 -3 malloc
+GROUP   : 21 -3 malloc
+FUNCTION: 16 -5 _int_malloc
+GROUP   : 16 -5 _int_malloc
+FUNCTION: 5 -3 qcount
+GROUP   : 5 -3 qcount
+FUNCTION: 6 -3 foo
+GROUP   : 11 -3 foo
+FUNCTION: 7 -3 printf
+GROUP   : 7 -3 printf
+FUNCTION: 22 -1 _IO_vfprintf
+GROUP   : 22 -1 _IO_vfprintf
+FUNCTION: 12 -1 __errno_location
+GROUP   : 12 -1 __errno_location
+FUNCTION: 10 -1 _IO_flockfile
+GROUP   : 10 -1 _IO_flockfile
+FUNCTION: 12 -1 _IO_new_file_xsputn
+GROUP   : 12 -1 _IO_new_file_xsputn
+FUNCTION: 8 -1 _IO_funlockfile
+GROUP   : 8 -1 _IO_funlockfile
+FUNCTION: 21 -3 malloc
+GROUP   : 21 -3 malloc
+FUNCTION: 16 -5 _int_malloc
+GROUP   : 16 -5 _int_malloc
+FUNCTION: 5 -3 qcount
+GROUP   : 5 -3 qcount
+FUNCTION: 6 -3 foo
+GROUP   : 11 -3 foo
+FUNCTION: 7 -3 printf
+GROUP   : 7 -3 printf
+FUNCTION: 22 -1 _IO_vfprintf
+GROUP   : 22 -1 _IO_vfprintf
+FUNCTION: 12 -1 __errno_location
+GROUP   : 12 -1 __errno_location
+FUNCTION: 10 -1 _IO_flockfile
+GROUP   : 10 -1 _IO_flockfile
+FUNCTION: 12 -1 _IO_new_file_xsputn
+GROUP   : 12 -1 _IO_new_file_xsputn
+FUNCTION: 8 -1 _IO_funlockfile
+GROUP   : 8 -1 _IO_funlockfile
+FUNCTION: 21 -3 malloc
+GROUP   : 21 -3 malloc
+FUNCTION: 16 -5 _int_malloc
+GROUP   : 16 -5 _int_malloc
+FUNCTION: 5 -3 qcount
+GROUP   : 5 -3 qcount
+FUNCTION: 10 -13 exit
+GROUP   : 10 -13 exit
+FUNCTION: 5 0 __libc_csu_fini
+GROUP   : 5 0 __libc_csu_fini
+FUNCTION: 7 0 _fini
+GROUP   : 7 0 _fini
+FUNCTION: 18 0 _IO_cleanup
+GROUP   : 18 0 _IO_cleanup
+FUNCTION: 5 0 _IO_flush_all
+GROUP   : 5 0 _IO_flush_all
+FUNCTION: 25 0 _IO_flush_all_lockp
+GROUP   : 25 0 _IO_flush_all_lockp
+FUNCTION: 10 0 _IO_flockfile
+GROUP   : 10 0 _IO_flockfile
+FUNCTION: 8 0 _IO_funlockfile
+GROUP   : 8 0 _IO_funlockfile
+FUNCTION: 10 0 _IO_flockfile
+GROUP   : 10 0 _IO_flockfile
+FUNCTION: 10 0 _IO_file_overflow
+GROUP   : 10 0 _IO_file_overflow
+FUNCTION: 11 0 _IO_new_do_write
+GROUP   : 11 0 _IO_new_do_write
+FUNCTION: 7 0 _IO_file_write
+GROUP   : 7 0 _IO_file_write
+FUNCTION: 4 0 __write
+GROUP   : 4 0 __write
+FUNCTION: 8 -1 _IO_funlockfile
+GROUP   : 8 -1 _IO_funlockfile
+FUNCTION: 10 -1 _IO_flockfile
+GROUP   : 10 -1 _IO_flockfile
+FUNCTION: 8 -1 _IO_funlockfile
+GROUP   : 8 -1 _IO_funlockfile
+FUNCTION: 6 -1 _IO_file_setbuf
+GROUP   : 6 -1 _IO_file_setbuf
+FUNCTION: 9 0 _IO_default_setbuf
+GROUP   : 9 0 _IO_default_setbuf
+FUNCTION: 7 0 _IO_file_sync
+GROUP   : 7 0 _IO_file_sync
+FUNCTION: 8 0 _IO_setb
+GROUP   : 8 0 _IO_setb
+FUNCTION: 7 0 munmap
+GROUP   : 7 0 munmap
+FUNCTION: 12 0 __errno_location
+GROUP   : 12 0 __errno_location
+FUNCTION: 3 -1 _Exit
+GROUP   : 3 -1 _Exit

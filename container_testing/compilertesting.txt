@@ -1,0 +1,5 @@
+ /home/eugen/crosstool-0.42/compiled/gcc-3.3-glibc-2.3.2/arm-unknown-linux-gnu/lib/gcc-lib/arm-unknown-linux-gnu/3.3/cc1 -quiet -v -D__GNUC__=3 -D__GNUC_MINOR__=3 -D__GNUC_PATCHLEVEL__=0 -D__ARM_ARCH_4T__ simpletest2.c -quiet -dumpbase simpletest2.c -auxbase simpletest2 -version -o ccpwzfSd.s
+
+
+/home/eugen/crosstool-0.42/compiled/gcc-3.3-glibc-2.3.2/arm-unknown-linux-gnu/lib/gcc-lib/arm-unknown-linux-gnu/3.3/cc1 /home/eugen/work/container_testing/simpletest2.c -o /home/eugen/work/container_testing/simpletest2.asm
+

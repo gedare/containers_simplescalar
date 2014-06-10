@@ -1,0 +1,23 @@
+The philosophy : 
+ - run the benchmarks once, gather the trace information.
+ - there are 3 generated traces : 
+ 	1 - static memory calls. ( the second run of the simulator will use this to simulate the static part of the container lists)
+ 	2 - heap/reference type memory calls ( used in the second compilation stage to insert the ALLOW primitives)
+ 	3 - debugging trace - full memory call trace of the benchmark
+ 	
+ - merge trace 2 (compiler trace) into one big file -> use this to recompile glibc - reintrument malloc and glibc functions as if containerized
+ 
+ - compile the benchmarks again - insert nops in function preamble ( simulate inserting ALLOW)
+ 
+ - run benchmarks again using trace 1 to make extra memory calls.
+ 
+
+
+Run1 :
+sim-outorder -config simconfig/nocache-trace.cfg simpltest.ss &> simpltetest.ss.run1
+
+Compile : 
+
+
+Run2:
+sim-outorder -config simconfig/nocache-trace.cfg simpltest.ss -redir:trace simpletest.trace.1 -cont:traceFile simpletest.trace  &> simpltetest.ss.run1

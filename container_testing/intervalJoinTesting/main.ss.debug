@@ -1,0 +1,1137 @@
+sim-outorder: SimpleScalar/ARM Tool Set version 3.0 of November, 2000.
+Copyright (c) 1994-2000 by Todd M. Austin.  All Rights Reserved.
+This version of SimpleScalar is licensed for academic non-commercial use only.
+
+sim: command line: sim-outorder -config ../simconfig/nocache.cfg main.ss 
+
+sim: simulation started @ Fri Aug 24 15:29:42 2007, options follow:
+
+sim-outorder: This simulator implements a very detailed out-of-order issue
+superscalar processor with a two-level memory system and speculative
+execution support.  This simulator is a performance simulator, tracking the
+latency of all pipeline operations.
+
+# -config                     # load configuration from a file
+# -dumpconfig                 # dump configuration to a file
+# -h                    false # print help message    
+# -v                    false # verbose operation     
+# -d                    false # enable debug message  
+# -i                    false # start in Dlite debugger
+-seed                       1 # random number generator seed (0 for timer seed)
+# -q                    false # initialize and terminate immediately
+# -chkpt               <null> # restore EIO trace execution from <fname>
+# -redir:sim           <null> # redirect simulator output to file (non-interactive only)
+# -redir:prog          <null> # redirect simulated program output to file
+-nice                       0 # simulator scheduling priority
+-max:inst                   0 # maximum number of inst's to execute
+# -ptracepipe               0 # The pipe for the ptrace communications
+-profile                false # look for areas with significant IPCs
+-fastfwd                    0 # number of insts skipped before timing starts
+# -ptrace              <null> # generate pipetrace, i.e., <fname|stdout|stderr> <range>
+-fetch:ifqsize              1 # instruction fetch queue size (in insts)
+-fetch:mplat                3 # extra branch mis-prediction latency
+-fetch:speed                1 # speed of front-end of machine relative to execution core
+-bpred                  bimod # branch predictor type {nottaken|taken|perfect|bimod|2lev|comb}
+-bpred:bimod     2048 # bimodal predictor config (<table size>)
+-bpred:2lev      1 1024 8 0 # 2-level predictor config (<l1size> <l2size> <hist_size> <xor>)
+-bpred:comb      1024 # combining predictor config (<meta_table_size>)
+-bpred:ras                  8 # return address stack size (0 for no return stack)
+-bpred:btb       512 4 # BTB config (<num_sets> <associativity>)
+# -bpred:spec_update       <null> # speculative predictors update in {ID|WB} (default non-spec)
+-decode:width               4 # instruction decode B/W (insts/cycle)
+-issue:width                4 # instruction issue B/W (insts/cycle)
+-issue:inorder           true # run pipeline with in-order issue
+-issue:wrongpath        false # issue instructions down wrong execution paths
+-commit:width               4 # instruction commit B/W (insts/cycle)
+-ruu:size                  16 # register update unit (RUU) size
+-lsq:size                   8 # load/store queue (LSQ) size
+-lsq:perfect            false # perfect memory disambiguation
+-cache:dl1               none # l1 data cache config, i.e., {<config>|none}
+-cache:dl1lat               1 # l1 data cache hit latency (in cycles)
+-cache:dl2               none # l2 data cache config, i.e., {<config>|none}
+-cache:dl2lat               1 # l2 data cache hit latency (in cycles)
+-cache:il1               none # l1 inst cache config, i.e., {<config>|dl1|dl2|none}
+-cache:il1lat               1 # l1 instruction cache hit latency (in cycles)
+-cache:il2               none # l2 instruction cache config, i.e., {<config>|dl2|none}
+-cache:il2lat               1 # l2 instruction cache hit latency (in cycles)
+-cache:flush            false # flush caches on system calls
+-cache:icompress        false # convert 64-bit inst addresses to 32-bit inst equivalents
+-mem:lat         15 2 # memory access latency (<first_chunk> <inter_chunk>)
+-mem:width                  8 # memory access bus width (in bytes)
+-mem:pipelined          false # memory accesses are fully pipelined
+-tlb:itlb        itlb:16:4096:4:l # instruction TLB config, i.e., {<config>|none}
+-tlb:dtlb        dtlb:32:4096:4:l # data TLB config, i.e., {<config>|none}
+-tlb:lat                   30 # inst/data TLB miss latency (in cycles)
+-res:ialu                   2 # total number of integer ALU's available
+-res:imult                  1 # total number of integer multiplier/dividers available
+-res:memport                1 # total number of memory system ports available (to CPU)
+-res:fpalu                  1 # total number of floating point ALU's available
+-res:fpmult                 1 # total number of floating point multiplier/dividers available
+# -pcstat              <null> # profile stat(s) against text addr's (mult uses ok)
+-bugcompat              false # operate in backward-compatible bugs mode (for testing only)
+
+  Pipetrace range arguments are formatted as follows:
+
+    {{@|#}<start>}:{{@|#|+}<end>}
+
+  Both ends of the range are optional, if neither are specified, the entire
+  execution is traced.  Ranges that start with a `@' designate an address
+  range to be traced, those that start with an `#' designate a cycle count
+  range.  All other range values represent an instruction count range.  The
+  second argument, if specified with a `+', indicates a value relative
+  to the first argument, e.g., 1000:+100 == 1000:1100.  Program symbols may
+  be used in all contexts.
+
+    Examples:   -ptrace FOO.trc #0:#1000
+                -ptrace BAR.trc @2000:
+                -ptrace BLAH.trc :1500
+                -ptrace UXXE.trc :
+                -ptrace FOOBAR.trc @main:+278
+
+  Branch predictor configuration examples for 2-level predictor:
+    Configurations:   N, M, W, X
+      N   # entries in first level (# of shift register(s))
+      W   width of shift register(s)
+      M   # entries in 2nd level (# of counters, or other FSM)
+      X   (yes-1/no-0) xor history and address for 2nd level index
+    Sample predictors:
+      GAg     : 1, W, 2^W, 0
+      GAp     : 1, W, M (M > 2^W), 0
+      PAg     : N, W, 2^W, 0
+      PAp     : N, W, M (M == 2^(N+W)), 0
+      gshare  : 1, W, 2^W, 1
+  Predictor `comb' combines a bimodal and a 2-level predictor.
+
+  The cache config parameter <config> has the following format:
+
+    <name>:<nsets>:<bsize>:<assoc>:<repl>
+
+    <name>   - name of the cache being defined
+    <nsets>  - number of sets in the cache
+    <bsize>  - block size of the cache
+    <assoc>  - associativity of the cache
+    <repl>   - block replacement strategy, 'l'-LRU, 'f'-FIFO, 'r'-random
+
+    Examples:   -cache:dl1 dl1:4096:32:1:l
+                -dtlb dtlb:128:4096:32:r
+
+  Cache levels can be unified by pointing a level of the instruction cache
+  hierarchy at the data cache hiearchy using the "dl1" and "dl2" cache
+  configuration arguments.  Most sensible combinations are supported, e.g.,
+
+    A unified l2 cache (il2 is pointed at dl2):
+      -cache:il1 il1:128:64:1:l -cache:il2 dl2
+      -cache:dl1 dl1:256:32:1:l -cache:dl2 ul2:1024:64:2:l
+
+    Or, a fully unified cache hierarchy (il1 pointed at dl1):
+      -cache:il1 dl1
+      -cache:dl1 ul1:256:32:1:l -cache:dl2 ul2:1024:64:2:l
+
+
+
+sim: ** starting performance simulation **
+warning: invalid/unimplemented syscall 122, PC=0x0000f560, winging it
+warning: invalid/unimplemented syscall 221, PC=0x0000f734, winging it
+warning: invalid/unimplemented syscall 221, PC=0x0000f734, winging it
+warning: invalid/unimplemented syscall 221, PC=0x0000f734, winging it
+warning: invalid/unimplemented syscall 201, PC=0x0001fe68, winging it
+warning: invalid/unimplemented syscall 199, PC=0x0001fe60, winging it
+warning: invalid/unimplemented syscall 202, PC=0x0001fe78, winging it
+warning: invalid/unimplemented syscall 200, PC=0x0001fe70, winging it
+warning: invalid/unimplemented syscall 197, PC=0x0000f5a8, winging it
+Giving access to the registers 80d0 _start 
+|	8658 __libc_start_main 
+|	|	fc1c _dl_aux_init 
+|	|	*
+|	|	f560 __uname 
+|	|	|	10030 __syscall_error 
+|	|	|	|	f5d0 __libc_open 
+|	|	|	|	*
+|	|	|	|	f6a0 __libc_read 
+|	|	|	|	*
+|	|	|	|	f640 __libc_close 
+|	|	|	|	*
+|	|	|	|	8948 __libc_check_standard_fds 
+|	|	|	|	|	f900 __libc_fcntl 
+|	|	|	|	|	*
+|	|	|	|	|	f900 __libc_fcntl 
+|	|	|	|	|	*
+|	|	|	|	|	f900 __libc_fcntl 
+|	|	|	|	|	*
+|	|	|	|	*
+|	|	|	|	10014 __libc_init_first 
+|	|	|	|	|	10050 __setfpucw 
+|	|	|	|	|	*
+|	|	|	|	|	ff40 __libc_init_secure 
+|	|	|	|	|	|	1fe68 __geteuid 
+|	|	|	|	|	|	*
+|	|	|	|	|	|	1fe60 __getuid 
+|	|	|	|	|	|	*
+|	|	|	|	|	|	1fe78 __getegid 
+|	|	|	|	|	|	*
+|	|	|	|	|	|	1fe70 __getgid 
+|	|	|	|	|	|	*
+|	|	|	|	|	*
+|	|	|	|	|	fcd8 _dl_non_dynamic_init 
+|	|	|	|	|	|	f9e0 __getpagesize 
+|	|	|	|	|	|	*
+|	|	|	|	|	|	10360 getenv 
+|	|	|	|	|	|	|	ea20 strlen 
+|	|	|	|	|	|	|	*
+|	|	|	|	|	|	*
+|	|	|	|	|	|	10360 getenv 
+|	|	|	|	|	|	|	ea20 strlen 
+|	|	|	|	|	|	|	*
+|	|	|	|	|	|	*
+|	|	|	|	|	|	210c8 _dl_init_paths 
+|	|	|	|	|	|	|	ff18 _dl_important_hwcaps 
+|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	c8d4 __libc_malloc 
+|	|	|	|	|	|	|	|	f9e0 __getpagesize 
+|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	facc __register_atfork 
+|	|	|	|	|	|	|	|	|	c8d4 __libc_malloc 
+|	|	|	|	|	|	|	|	|	|	d610 _int_malloc 
+|	|	|	|	|	|	|	|	|	|	|	ea00 __default_morecore 
+|	|	|	|	|	|	|	|	|	|	|	|	f96c __sbrk 
+|	|	|	|	|	|	|	|	|	|	|	|	|	1ffb0 __brk 
+|	|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	|	1ffb0 __brk 
+|	|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	ea00 __default_morecore 
+|	|	|	|	|	|	|	|	|	|	|	|	f96c __sbrk 
+|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	c8d4 __libc_malloc 
+|	|	|	|	|	|	|	|	|	|	d610 _int_malloc 
+|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	c8d4 __libc_malloc 
+|	|	|	|	|	|	|	|	|	|	d610 _int_malloc 
+|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	c8d4 __libc_malloc 
+|	|	|	|	|	|	|	|	|	d610 _int_malloc 
+|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	c8d4 __libc_malloc 
+|	|	|	|	|	|	|	|	d610 _int_malloc 
+|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	10360 getenv 
+|	|	|	|	|	|	|	|	ea20 strlen 
+|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	10360 getenv 
+|	|	|	|	|	|	|	|	ea20 strlen 
+|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	10360 getenv 
+|	|	|	|	|	|	|	|	ea20 strlen 
+|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	10360 getenv 
+|	|	|	|	|	|	|	|	ea20 strlen 
+|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	2089c __init_misc 
+|	|	|	|	|	|	|	|	376c0 strrchr 
+|	|	|	|	|	|	|	|	|	1ea14 strchr 
+|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	8d40 __cxa_atexit 
+|	|	|	|	|	|	|	|	8d78 __new_exitfn 
+|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	897c __libc_csu_init 
+|	|	|	|	|	|	|	|	80b4 _init 
+|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	85d0 main 
+|	|	|	|	|	|	|	|	8e8c printf 
+|	|	|	|	|	|	|	|	|	11d0c _IO_vfprintf 
+|	|	|	|	|	|	|	|	|	|	1a468 _IO_flockfile 
+|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	1e4c4 _IO_new_file_xsputn 
+|	|	|	|	|	|	|	|	|	|	|	1db14 _IO_new_file_overflow 
+|	|	|	|	|	|	|	|	|	|	|	|	969c _IO_doallocbuf 
+|	|	|	|	|	|	|	|	|	|	|	|	|	36794 _IO_file_doallocate 
+|	|	|	|	|	|	|	|	|	|	|	|	|	|	1e3e8 _IO_file_stat 
+|	|	|	|	|	|	|	|	|	|	|	|	|	|	|	f59c ___fxstat64 
+|	|	|	|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	|	|	fa00 __mmap 
+|	|	|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	|	|	9630 _IO_setb 
+|	|	|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	1d224 _IO_new_do_write 
+|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	549a8 __umodsi3 
+|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	972c _IO_default_xsputn 
+|	|	|	|	|	|	|	|	|	|	|	|	f040 __mempcpy 
+|	|	|	|	|	|	|	|	|	|	|	|	|	f174 _wordcopy_fwd_aligned 
+|	|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	1a48c _IO_funlockfile 
+|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	81ec UpdateAddressList 
+|	|	|	|	|	|	|	|	|	84fc consAddressList 
+|	|	|	|	|	|	|	|	|	|	8e8c printf 
+|	|	|	|	|	|	|	|	|	|	|	11d0c _IO_vfprintf 
+|	|	|	|	|	|	|	|	|	|	|	|	1a468 _IO_flockfile 
+|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	1e4c4 _IO_new_file_xsputn 
+|	|	|	|	|	|	|	|	|	|	|	|	|	f040 __mempcpy 
+|	|	|	|	|	|	|	|	|	|	|	|	|	|	f270 _wordcopy_fwd_dest_aligned 
+|	|	|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	1e4c4 _IO_new_file_xsputn 
+|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	1e4c4 _IO_new_file_xsputn 
+|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	1e4c4 _IO_new_file_xsputn 
+|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	1e4c4 _IO_new_file_xsputn 
+|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	1a48c _IO_funlockfile 
+|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	8494 printAddressList 
+|	|	|	|	|	|	|	|	|	|	|	8e8c printf 
+|	|	|	|	|	|	|	|	|	|	|	|	11d0c _IO_vfprintf 
+|	|	|	|	|	|	|	|	|	|	|	|	|	1a468 _IO_flockfile 
+|	|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	|	1e4c4 _IO_new_file_xsputn 
+|	|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	|	1a48c _IO_funlockfile 
+|	|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	8e8c printf 
+|	|	|	|	|	|	|	|	|	|	|	11d0c _IO_vfprintf 
+|	|	|	|	|	|	|	|	|	|	|	|	1a468 _IO_flockfile 
+|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	1e4c4 _IO_new_file_xsputn 
+|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	1a48c _IO_funlockfile 
+|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	c8d4 __libc_malloc 
+|	|	|	|	|	|	|	|	|	|	|	d610 _int_malloc 
+|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	81ec UpdateAddressList 
+|	|	|	|	|	|	|	|	|	84fc consAddressList 
+|	|	|	|	|	|	|	|	|	|	8e8c printf 
+|	|	|	|	|	|	|	|	|	|	|	11d0c _IO_vfprintf 
+|	|	|	|	|	|	|	|	|	|	|	|	1a468 _IO_flockfile 
+|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	1e4c4 _IO_new_file_xsputn 
+|	|	|	|	|	|	|	|	|	|	|	|	|	f040 __mempcpy 
+|	|	|	|	|	|	|	|	|	|	|	|	|	|	f270 _wordcopy_fwd_dest_aligned 
+|	|	|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	1e4c4 _IO_new_file_xsputn 
+|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	1e4c4 _IO_new_file_xsputn 
+|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	1e4c4 _IO_new_file_xsputn 
+|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	1e4c4 _IO_new_file_xsputn 
+|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	1a48c _IO_funlockfile 
+|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	8494 printAddressList 
+|	|	|	|	|	|	|	|	|	|	|	8e8c printf 
+|	|	|	|	|	|	|	|	|	|	|	|	11d0c _IO_vfprintf 
+|	|	|	|	|	|	|	|	|	|	|	|	|	1a468 _IO_flockfile 
+|	|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	|	1e4c4 _IO_new_file_xsputn 
+|	|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	|	1a48c _IO_funlockfile 
+|	|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	8e8c printf 
+|	|	|	|	|	|	|	|	|	|	|	11d0c _IO_vfprintf 
+|	|	|	|	|	|	|	|	|	|	|	|	1a468 _IO_flockfile 
+|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	1e4c4 _IO_new_file_xsputn 
+|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	1a48c _IO_funlockfile 
+|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	c8d4 __libc_malloc 
+|	|	|	|	|	|	|	|	|	|	|	d610 _int_malloc 
+|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	81ec UpdateAddressList 
+|	|	|	|	|	|	|	|	|	84fc consAddressList 
+|	|	|	|	|	|	|	|	|	|	8e8c printf 
+|	|	|	|	|	|	|	|	|	|	|	11d0c _IO_vfprintf 
+|	|	|	|	|	|	|	|	|	|	|	|	1a468 _IO_flockfile 
+|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	1e4c4 _IO_new_file_xsputn 
+|	|	|	|	|	|	|	|	|	|	|	|	|	f040 __mempcpy 
+|	|	|	|	|	|	|	|	|	|	|	|	|	|	f174 _wordcopy_fwd_aligned 
+|	|	|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	Starting interval verification...
+	DEBUG in consAddressList 5 9 
+*
+	DEBUG
+	DEBUG in consAddressList 10 11 
+*
+	DEBUG
+	DEBUG in consAddressList 6 7 
+*
+	DEBUG
+[6,7)
+*
+warning: invalid/unimplemented syscall 91, PC=0x0000fa20, winging it
+
+sim: ** simulation statistics **
+sim_num_insn                  13914 # total number of instructions committed
+sim_num_uops                  22936 # total number of UOPs executed
+sim_avg_flowlen              1.6484 # uops per instruction
+sim_num_refs                   6084 # total number of loads and stores committed
+sim_num_loads                  3953 # total number of loads committed
+sim_num_stores            2131.0000 # total number of stores committed
+sim_num_branches               2317 # total number of branches committed
+sim_elapsed_time                  1 # total simulation time in seconds
+sim_inst_rate            13914.0000 # simulation speed (in insts/sec)
+sim_total_insn                22935 # total number of instructions executed
+sim_total_refs                 6084 # total number of loads and stores executed
+sim_total_loads                3953 # total number of loads executed
+sim_total_stores          2131.0000 # total number of stores executed
+sim_total_branches             2317 # total number of branches executed
+sim_cycle                     22637 # total simulation time in cycles
+sim_IPC                      0.6147 # instructions per cycle
+sim_CPI                      1.6269 # cycles per instruction
+sim_exec_BW                  1.0132 # total instructions (mis-spec + committed) per cycle
+sim_IPB                      6.0052 # instruction per branch
+IFQ_count                     19643 # cumulative IFQ occupancy
+IFQ_fcount                    19643 # cumulative IFQ full count
+ifq_occupancy                0.8677 # avg IFQ occupancy (insn's)
+ifq_rate                     1.0132 # avg IFQ dispatch rate (insn/cycle)
+ifq_latency                  0.8565 # avg IFQ occupant latency (cycle's)
+ifq_full                     0.8677 # fraction of time (cycle's) IFQ was full
+RUU_count                     60263 # cumulative RUU occupancy
+RUU_fcount                       23 # cumulative RUU full count
+ruu_occupancy                2.6621 # avg RUU occupancy (insn's)
+ruu_rate                     1.0132 # avg RUU dispatch rate (insn/cycle)
+ruu_latency                  2.6276 # avg RUU occupant latency (cycle's)
+ruu_full                     0.0010 # fraction of time (cycle's) RUU was full
+LSQ_count                     26304 # cumulative LSQ occupancy
+LSQ_fcount                      333 # cumulative LSQ full count
+lsq_occupancy                1.1620 # avg LSQ occupancy (insn's)
+lsq_rate                     1.0132 # avg LSQ dispatch rate (insn/cycle)
+lsq_latency                  1.1469 # avg LSQ occupant latency (cycle's)
+lsq_full                     0.0147 # fraction of time (cycle's) LSQ was full
+sim_slip                     109502 # total number of slip cycles
+avg_sim_slip                 7.8699 # the average slip between issue and retirement
+bpred_bimod.lookups            2334 # total number of bpred lookups
+bpred_bimod.updates            2317 # total number of updates
+bpred_bimod.addr_hits          1861 # total number of address-predicted hits
+bpred_bimod.dir_hits           1985 # total number of direction-predicted hits (includes addr-hits)
+bpred_bimod.misses              332 # total number of misses
+bpred_bimod.jr_hits               0 # total number of address-predicted hits for JR's
+bpred_bimod.jr_seen               0 # total number of JR's seen
+bpred_bimod.jr_non_ras_hits.PP            0 # total number of address-predicted hits for non-RAS JR's
+bpred_bimod.jr_non_ras_seen.PP            0 # total number of non-RAS JR's seen
+bpred_bimod.bpred_addr_rate    0.8032 # branch address-prediction rate (i.e., addr-hits/updates)
+bpred_bimod.bpred_dir_rate    0.8567 # branch direction-prediction rate (i.e., all-hits/updates)
+bpred_bimod.bpred_jr_rate <error: divide by zero> # JR address-prediction rate (i.e., JR addr-hits/JRs seen)
+bpred_bimod.bpred_jr_non_ras_rate.PP <error: divide by zero> # non-RAS JR addr-pred rate (ie, non-RAS JR hits/JRs seen)
+bpred_bimod.retstack_pushes          230 # total number of address pushed onto ret-addr stack
+bpred_bimod.retstack_pops            0 # total number of address popped off of ret-addr stack
+bpred_bimod.used_ras.PP            0 # total number of RAS predictions used
+bpred_bimod.ras_hits.PP            0 # total number of RAS hits
+bpred_bimod.ras_rate.PP <error: divide by zero> # RAS prediction rate (i.e., RAS hits/used RAS)
+itlb.accesses                 14179 # total number of accesses
+itlb.hits                     14155 # total number of hits
+itlb.misses                      24 # total number of misses
+itlb.replacements                 0 # total number of replacements
+itlb.writebacks                   0 # total number of writebacks
+itlb.invalidations                0 # total number of invalidations
+itlb.miss_rate               0.0017 # miss rate (i.e., misses/ref)
+itlb.repl_rate               0.0000 # replacement rate (i.e., repls/ref)
+itlb.wb_rate                 0.0000 # writeback rate (i.e., wrbks/ref)
+itlb.inv_rate                0.0000 # invalidation rate (i.e., invs/ref)
+dtlb.accesses                  6084 # total number of accesses
+dtlb.hits                      6060 # total number of hits
+dtlb.misses                      24 # total number of misses
+dtlb.replacements                 0 # total number of replacements
+dtlb.writebacks                   0 # total number of writebacks
+dtlb.invalidations                0 # total number of invalidations
+dtlb.miss_rate               0.0039 # miss rate (i.e., misses/ref)
+dtlb.repl_rate               0.0000 # replacement rate (i.e., repls/ref)
+dtlb.wb_rate                 0.0000 # writeback rate (i.e., wrbks/ref)
+dtlb.inv_rate                0.0000 # invalidation rate (i.e., invs/ref)
+sim_invalid_addrs                 0 # total non-speculative bogus addresses seen (debug var)
+ld_text_base           0x000080b4 # program text (code) segment base
+ld_text_bound          0x00055d2c # program text (code) segment bound
+ld_text_size                 318584 # program text (code) size in bytes
+ld_data_base           0x00055d2c # program initialized data segment base
+ld_data_bound          0x00069e48 # program initialized data segment bound
+ld_data_size                  82204 # program init'ed `.data' and uninit'ed `.bss' size in bytes
+ld_stack_base          0xc0000000 # program stack segment base (highest address in stack)
+ld_stack_size                 16384 # program initial stack size
+ld_prog_entry          0x000080d0 # program entry point (initial PC)
+ld_environ_base        0xbfffc000 # program environment base address address
+ld_target_big_endian              0 # target executable endian-ness, non-zero if big endian
+mem.page_count                  102 # total number of pages allocated
+mem.page_mem                   408k # total size of memory pages allocated
+mem.ptab_misses                 102 # total first level page table misses
+mem.ptab_accesses            867804 # total page table accesses
+mem.ptab_miss_rate           0.0001 # first level page table miss rate
+|	*
+|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	1e4c4 _IO_new_file_xsputn 
+|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	1e4c4 _IO_new_file_xsputn 
+|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	1e4c4 _IO_new_file_xsputn 
+|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	1e4c4 _IO_new_file_xsputn 
+|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	1a48c _IO_funlockfile 
+|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	8494 printAddressList 
+|	|	|	|	|	|	|	|	|	|	|	8e8c printf 
+|	|	|	|	|	|	|	|	|	|	|	|	11d0c _IO_vfprintf 
+|	|	|	|	|	|	|	|	|	|	|	|	|	1a468 _IO_flockfile 
+|	|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	|	1e4c4 _IO_new_file_xsputn 
+|	|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	|	1a48c _IO_funlockfile 
+|	|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	8e8c printf 
+|	|	|	|	|	|	|	|	|	|	|	11d0c _IO_vfprintf 
+|	|	|	|	|	|	|	|	|	|	|	|	1a468 _IO_flockfile 
+|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	1e4c4 _IO_new_file_xsputn 
+|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	1a48c _IO_funlockfile 
+|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	c8d4 __libc_malloc 
+|	|	|	|	|	|	|	|	|	|	|	d610 _int_malloc 
+|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	8494 printAddressList 
+|	|	|	|	|	|	|	|	|	8e8c printf 
+|	|	|	|	|	|	|	|	|	|	11d0c _IO_vfprintf 
+|	|	|	|	|	|	|	|	|	|	|	1a468 _IO_flockfile 
+|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	1e4c4 _IO_new_file_xsputn 
+|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	1e4c4 _IO_new_file_xsputn 
+|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	1e4c4 _IO_new_file_xsputn 
+|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	1e4c4 _IO_new_file_xsputn 
+|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	1e4c4 _IO_new_file_xsputn 
+|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	1a48c _IO_funlockfile 
+|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	8e8c printf 
+|	|	|	|	|	|	|	|	|	|	11d0c _IO_vfprintf 
+|	|	|	|	|	|	|	|	|	|	|	1a468 _IO_flockfile 
+|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	1e4c4 _IO_new_file_xsputn 
+|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	1a48c _IO_funlockfile 
+|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	8c38 exit 
+|	|	|	|	|	|	|	|	8a08 __libc_csu_fini 
+|	|	|	|	|	|	|	|	|	55d20 _fini 
+|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	9fe8 _IO_cleanup 
+|	|	|	|	|	|	|	|	|	9e48 _IO_flush_all 
+|	|	|	|	|	|	|	|	|	|	9cb4 _IO_flush_all_lockp 
+|	|	|	|	|	|	|	|	|	|	|	1a468 _IO_flockfile 
+|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	1a48c _IO_funlockfile 
+|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	1a468 _IO_flockfile 
+|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	1db14 _IO_new_file_overflow 
+|	|	|	|	|	|	|	|	|	|	|	|	1d224 _IO_new_do_write 
+|	|	|	|	|	|	|	|	|	|	|	|	|	1e448 _IO_new_file_write 
+|	|	|	|	|	|	|	|	|	|	|	|	|	|	1ff30 __libc_write 
+|	|	|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	1a48c _IO_funlockfile 
+|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	1a468 _IO_flockfile 
+|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	1a48c _IO_funlockfile 
+|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	1d19c _IO_new_file_setbuf 
+|	|	|	|	|	|	|	|	|	|	98ac _IO_default_setbuf 
+|	|	|	|	|	|	|	|	|	|	|	1dccc _IO_new_file_sync 
+|	|	|	|	|	|	|	|	|	|	|	*
+|	|	|	|	|	|	|	|	|	|	|	9630 _IO_setb 
+|	|	|	|	|	|	|	|	|	|	|	|	fa20 __munmap 
+|	|	|	|	|	|	|	|	|	|	|	|	|	10030 __syscall_error 
+|	|	|	|	|	|	|	|	|	|	|	|	|	|	f570 _exit 
+max-stack-size: 16
+container-table-size: 507
+Container statistics :
+Address 	 Name 	 Reads 	 BytesRead 	 Writes 	 BytesWritten 	 totalChildContainersCalled 	 totalStackPushes 	 uniqueChildContainersCalled
+42bec 	 profil_counter 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+3882c 	 __getdtablesize 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+a054 	 _IO_remove_marker 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+100b0 	 __libc_sigaction 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+34108 	 __isnanl 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+49770 	 strcpy 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1adc8 	 _IO_wdefault_xsgetn 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+8eb8 	 __fcloseall 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+54ba8 	 __ashldi3 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+2471c 	 _dl_setup_hash 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+90b4 	 _IO_link_in 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+257e4 	 _dl_debug_printf 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+9be0 	 _IO_sputbackc 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+9b2c 	 _IO_default_finish 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+4ce4c 	 _dl_check_map_versions 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+290d0 	 __gconv_transform_utf8_internal 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+ea00 	 __default_morecore 	 2 	 8 	 7 	 28 	 2 	 2 	 1 
+34190 	 __longjmp 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+253a8 	 _dl_receive_error 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+326f4 	 _nl_unload_domain 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+35050 	 __mpn_impn_mul_n_basecase 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1ae88 	 _IO_wdoallocbuf 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1fe50 	 __getpid 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+a2f0 	 _IO_list_lock 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+8e8c 	 printf 	 52 	 208 	 12 	 48 	 12 	 12 	 1 
+51758 	 __strtod_internal 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+54574 	 _IO_seekoff_unlocked 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+31c48 	 _nl_load_domain 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+9964 	 _IO_default_doallocate 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+42218 	 __new_getrlimit 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+370dc 	 __fsetlocking 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+f174 	 _wordcopy_fwd_aligned 	 16 	 64 	 14 	 56 	 0 	 2 	 0 
+ff18 	 _dl_important_hwcaps 	 2 	 8 	 3 	 12 	 0 	 1 	 0 
+3858c 	 ___xstat64 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1e4c4 	 _IO_new_file_xsputn 	 399 	 1440 	 97 	 232 	 6 	 28 	 4 
+4b614 	 _dl_reloc_bad_type 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1a728 	 _IO_least_wmarker 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+9b24 	 _IO_default_sync 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+410d8 	 __tzset 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+4df38 	 __strtoull_internal 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+3551c 	 __mpn_impn_sqr_n_basecase 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+243d4 	 _dl_lookup_versioned_symbol_skip 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+369d8 	 _IO_fflush 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1b34c 	 _IO_seekwmark 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+286a4 	 __gconv_transform_ascii_internal 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+2089c 	 __init_misc 	 11 	 44 	 5 	 20 	 1 	 1 	 1 
+35974 	 __mpn_sub_n 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1fcbc 	 __wcsmbs_clone_conv 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+db48 	 _int_free 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+344c4 	 __mpn_cmp 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1f094 	 __mbrlen 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+3a710 	 __mpn_addmul_1 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1ecf8 	 __strnlen 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+3a0a8 	 __gconv 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+ee6c 	 memmove 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+2951c 	 __gconv_transform_ucs2_internal 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+38770 	 __tcgetattr 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+24e88 	 _dl_new_object 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+9800 	 _IO_default_xsgetn 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+42304 	 __endmntent 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+26e28 	 __gconv_get_path 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+201cc 	 __tsearch 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+36f98 	 _IO_vasprintf 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1e264 	 _IO_file_seekoff_mmap 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+f900 	 __libc_fcntl 	 75 	 300 	 39 	 156 	 0 	 3 	 0 
+33bd4 	 __gettext_free_exp 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+34108 	 __isnan 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+23154 	 _dl_load_cache_lookup 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+33f7c 	 __gettext_extract_plural 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+fa00 	 __mmap 	 0 	 0 	 0 	 0 	 0 	 1 	 0 
+97ec 	 _IO_sgetn 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+fa30 	 __mprotect 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+d428 	 __libc_independent_comalloc 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+10464 	 __add_to_environ 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+10360 	 getenv 	 598 	 1564 	 0 	 0 	 6 	 6 	 1 
+1e3d8 	 _IO_file_seek 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+423cc 	 __getmntent_r 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+544e8 	 strtold 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+20888 	 __tdestroy 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+379b4 	 __rawmemchr 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+38630 	 __getcwd 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+a000 	 _IO_init_marker 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+108f0 	 __strtol_internal 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+341d4 	 bsearch 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+8494 	 printAddressList 	 18 	 72 	 41 	 164 	 5 	 4 	 1 
+1aaf4 	 __woverflow 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+18cc4 	 __register_printf_function 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+35904 	 __mpn_mul_n 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1cae8 	 _IO_new_file_init 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+2e054 	 __gconv_lookup_cache 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+3439c 	 qsort 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+e9bc 	 __posix_memalign 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+9e58 	 _IO_flush_all_linebuffered 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+4d37c 	 __strtoll_internal 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+3278c 	 _nl_expand_alias 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1b3e0 	 _IO_wdo_write 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+40204 	 __wcschrnul 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+96f8 	 _IO_default_underflow 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+8598 	 freeAddressList 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1a48c 	 _IO_funlockfile 	 42 	 168 	 0 	 0 	 0 	 15 	 0 
+4c930 	 _dl_init 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+2dc40 	 __gconv_load_cache 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+282a0 	 __gconv_transform_ucs4le_internal 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1af30 	 _IO_switch_to_wget_mode 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+49b10 	 __localtime_r 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+42b6c 	 __hasmntopt 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+3375c 	 __gettextparse 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+f0d8 	 memcpy 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+54748 	 __strncasecmp 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+972c 	 _IO_default_xsputn 	 9 	 36 	 4 	 16 	 1 	 1 	 1 
+34bf8 	 __mpn_lshift 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+2f588 	 _nl_load_locale 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1a4b0 	 _IO_fwrite 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+98ac 	 _IO_default_setbuf 	 3 	 12 	 9 	 36 	 2 	 1 	 2 
+9c34 	 _IO_sungetc 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+2dc30 	 __gconv_get_cache 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+2e4dc 	 __gconv_find_shlib 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1c65c 	 _IO_fwide 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+2f7b8 	 _nl_unload_locale 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1cb20 	 _IO_new_file_close_it 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1bad8 	 _IO_wfile_overflow 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+ccf8 	 __libc_memalign 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+2d9f8 	 __gconv_translit_find 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+9300 	 __overflow 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+3fddc 	 __btowc 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+34cb0 	 __mpn_mul 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1a468 	 _IO_flockfile 	 45 	 180 	 0 	 0 	 0 	 15 	 0 
+fcd8 	 _dl_non_dynamic_init 	 7 	 25 	 13 	 52 	 4 	 1 	 3 
+340cc 	 __isinf 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+359c0 	 __mpn_submul_1 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1e438 	 _IO_file_close 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+d4f4 	 __malloc_trim 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+a134 	 _IO_unsave_markers 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+54860 	 __udivsi3 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+208f4 	 __llseek 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+23cec 	 _dl_lookup_symbol_skip 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1faa0 	 __wcsmbs_getfct 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+27694 	 __gconv_transform_internal_ucs4 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+84fc 	 consAddressList 	 45 	 180 	 69 	 276 	 12 	 3 	 12 
+36774 	 __asprintf 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1eb24 	 __strerror_r 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+83dc 	 joinAddress 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1fafc 	 __wcsmbs_load_conv 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+355f4 	 __mpn_impn_sqr_n 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+23f6c 	 _dl_lookup_versioned_symbol 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+259e8 	 _dl_mcount_wrapper 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+35130 	 __mpn_impn_mul_n 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+3a2d8 	 __current_locale_name 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+34150 	 __libc_longjmp 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+544f8 	 __mpn_construct_float 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+37928 	 __strsep 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+8d78 	 __new_exitfn 	 9 	 36 	 2 	 8 	 0 	 1 	 0 
+209c8 	 __libc_alloca_cutoff 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1a764 	 _IO_switch_to_main_wget_area 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+30530 	 __dcgettext 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+8a08 	 __libc_csu_fini 	 3 	 12 	 1 	 4 	 1 	 1 	 1 
+372a0 	 _IO_str_init_readonly 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+ff40 	 __libc_init_secure 	 4 	 16 	 1 	 4 	 4 	 1 	 4 
+4978c 	 __offtime 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1b25c 	 _IO_adjust_wcolumn 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+11290 	 __strtoul_internal 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+374a4 	 _IO_str_seekoff 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1fe70 	 __getgid 	 0 	 0 	 0 	 0 	 0 	 1 	 0 
+208f4 	 __lseek64 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1ce00 	 _IO_new_file_fopen 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+8e8c 	 _IO_printf 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+d574 	 __libc_mallinfo 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+36b84 	 _IO_new_fopen 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+27680 	 __gconv_btwoc_ascii 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+37c40 	 __wcslen 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+a2b8 	 _IO_default_write 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+f6a0 	 __libc_read 	 1 	 4 	 64 	 64 	 0 	 1 	 0 
+402d0 	 __tzname_max 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+faac 	 __libc_disable_asynccancel 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+265f4 	 __gconv_find_transform 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+3858c 	 __xstat64 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1e404 	 _IO_file_close_mmap 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+5518c 	 __umoddi3 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+cb50 	 __libc_realloc 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+29d28 	 __gconv_transform_ucs2reverse_internal 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+2f468 	 _nl_intern_locale_data 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+54bf8 	 __udivdi3 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1fdc0 	 _nl_cleanup_ctype 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+8a8c 	 abort 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+3a320 	 __sigjmp_save 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+437d0 	 _dl_close 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+169e4 	 __printf_fp 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1a670 	 _IO_wpadn 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+300fc 	 _nl_postload_ctype 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+36b94 	 _IO_fputs 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+27a98 	 __gconv_transform_ucs4_internal 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+80b4 	 _init 	 12 	 48 	 4 	 16 	 0 	 1 	 0 
+375f4 	 _IO_str_pbackfail 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1c51c 	 _IO_wfile_xsputn 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+a2c8 	 _IO_default_imbue 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+344fc 	 __mpn_divrem 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+3a310 	 __sigsetjmp 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+208f4 	 __libc_lseek64 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+23a14 	 _dl_lookup_symbol 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+34138 	 __signbit 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+10330 	 __kill 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+31364 	 _nl_find_domain 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+a2b0 	 _IO_default_read 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+36198 	 _itowa 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+a2cc 	 _IO_iter_begin 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+376c0 	 strrchr 	 3 	 12 	 3 	 12 	 1 	 1 	 1 
+304bc 	 __ctype_tolower_loc 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+8948 	 __libc_check_standard_fds 	 25 	 100 	 21 	 84 	 3 	 1 	 1 
+5452c 	 __mpn_construct_double 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+4a220 	 __setitimer 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1e3e8 	 _IO_file_stat 	 1 	 4 	 2 	 8 	 1 	 1 	 1 
+10020 	 _dl_start 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+544dc 	 __strtold_internal 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+41c30 	 __tzfile_default 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1bd70 	 _IO_wfile_sync 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+cfa0 	 __libc_pvalloc 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+4c7cc 	 _dl_runtime_resolve 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+18bb0 	 __guess_grouping 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+cec0 	 __libc_valloc 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+30774 	 __dcigettext 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1a448 	 fprintf 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+54b58 	 __lshrdi3 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+37620 	 _IO_str_finish 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+33214 	 _nl_normalize_codeset 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+25814 	 _dl_debug_printf_c 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+a2c0 	 _IO_default_showmanyc 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+38964 	 __get_nprocs 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+38734 	 __isatty 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+549a8 	 __umodsi3 	 0 	 0 	 0 	 0 	 0 	 1 	 0 
+42de0 	 __profile_frequency 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+4cab0 	 _dl_debug_state 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+28934 	 __gconv_transform_internal_ascii 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+37804 	 __stpcpy 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1fff0 	 __mmap64 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+372c0 	 _IO_str_overflow 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+25a24 	 _dl_initial_error_catch_tsd 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+210c8 	 _dl_init_paths 	 73 	 277 	 82 	 328 	 12 	 1 	 8 
+b284 	 _int_new_arena 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1e630 	 _IO_file_xsgetn 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+9fe8 	 _IO_cleanup 	 8 	 32 	 7 	 28 	 2 	 1 	 2 
+81ec 	 UpdateAddressList 	 77 	 308 	 39 	 156 	 3 	 3 	 1 
+9940 	 _IO_default_seekpos 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+398fc 	 __gconv_open 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+29924 	 __gconv_transform_internal_ucs2 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+49658 	 fseek 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1d224 	 _IO_new_do_write 	 24 	 94 	 15 	 60 	 1 	 2 	 1 
+2e6f0 	 __gconv_release_shlib 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+32e80 	 _nl_make_l10nflist 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+36ae0 	 __fopen_internal 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+99d8 	 _IO_no_init 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1ef98 	 __strchrnul 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1a5b8 	 _IO_padn 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+3fb74 	 _IO_getline_info 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+f59c 	 ___fxstat64 	 7 	 28 	 2 	 8 	 0 	 1 	 0 
+35bbc 	 _itoa 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+4c7f0 	 _dl_runtime_profile 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+371a8 	 _IO_str_init_static 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1fe80 	 __libc_open64 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+20bb4 	 _dl_dst_substitute 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+3a24c 	 __gconv_close 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1f2a0 	 __wcrtomb 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+4a1ec 	 mktime 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+80d0 	 _start 	 3 	 12 	 12 	 48 	 1 	 1 	 1 
+9e48 	 _IO_flush_all 	 0 	 0 	 7 	 28 	 1 	 1 	 1 
+1eeac 	 strstr 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+dde4 	 _int_realloc 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+36878 	 _IO_new_fclose 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+a2ec 	 _IO_iter_file 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+9c7c 	 _IO_adjust_column 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+9cb4 	 _IO_flush_all_lockp 	 43 	 166 	 15 	 60 	 7 	 1 	 7 
+10014 	 __libc_init_first 	 7 	 28 	 15 	 60 	 3 	 1 	 3 
+25230 	 _dl_signal_cerror 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+38760 	 __readlink 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+35a44 	 __mpn_extract_double 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+37a54 	 __argz_count 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1edd0 	 strncmp 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+3352c 	 _nl_explode_name 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+3a870 	 _IO_vfwprintf 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1aedc 	 _IO_wdefault_doallocate 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+c8d4 	 __libc_malloc 	 209 	 767 	 126 	 504 	 11 	 9 	 5 
+a090 	 _IO_marker_delta 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+ca94 	 __libc_free 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1d8ac 	 _IO_file_underflow_mmap 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1b204 	 _IO_sungetwc 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+f470 	 _wordcopy_bwd_dest_aligned 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+37488 	 _IO_str_count 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+43488 	 _dl_open 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1daf4 	 _IO_file_underflow_maybe_mmap 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1fe78 	 __getegid 	 0 	 0 	 0 	 0 	 0 	 1 	 0 
+facc 	 __register_atfork 	 17 	 68 	 30 	 120 	 3 	 1 	 1 
+34150 	 __libc_siglongjmp 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+4d22c 	 _dl_check_all_versions 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+4ca6c 	 _dl_debug_initialize 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+41154 	 __tz_convert 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+37a94 	 __argz_create_sep 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+37658 	 __strdup 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+25a50 	 __gconv_alias_compare 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+8d40 	 __cxa_atexit 	 4 	 16 	 7 	 28 	 1 	 1 	 1 
+1f074 	 __wmemmove 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1ffb0 	 __brk 	 4 	 16 	 2 	 8 	 0 	 2 	 0 
+1b2fc 	 _IO_wmarker_delta 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+d604 	 __libc_mallopt 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+a2a8 	 _IO_default_stat 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1dccc 	 _IO_new_file_sync 	 7 	 28 	 2 	 8 	 0 	 1 	 0 
+ea80 	 memcmp 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+42c80 	 __profil 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+3a6c0 	 __mpn_add_n 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+3fb30 	 sscanf 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+36f78 	 __fwprintf 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+3fd74 	 __strcasecmp_l 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+a080 	 _IO_marker_difference 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+25868 	 _dl_get_origin 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1afd0 	 _IO_free_wbackup_area 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+2f308 	 _nl_remove_locale 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+f9e0 	 __getpagesize 	 2 	 8 	 2 	 8 	 0 	 2 	 0 
+1f0c8 	 __mbrtowc 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+10030 	 __syscall_error 	 53 	 182 	 32 	 125 	 6 	 2 	 6 
+92d0 	 _IO_free_backup_area 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+f640 	 __libc_close 	 1 	 4 	 0 	 0 	 0 	 1 	 0 
+9470 	 __underflow 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+275c0 	 __gconv_get_builtin_trans 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+897c 	 __libc_csu_init 	 8 	 32 	 1 	 4 	 1 	 1 	 1 
+38964 	 __get_nprocs_conf 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+25c2c 	 __gconv_release_step 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+f5d0 	 __libc_open 	 28 	 31 	 0 	 0 	 0 	 1 	 0 
+1acfc 	 _IO_wdefault_xsputn 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+28cc8 	 __gconv_transform_internal_utf8 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+49b24 	 localtime 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+9700 	 _IO_default_uflow 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+efa0 	 memset 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1f084 	 __wmempcpy 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+85d0 	 main 	 4 	 16 	 9 	 36 	 5 	 1 	 3 
+38cd0 	 _dl_start_profile 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1fa14 	 __wcsnlen 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+54b3c 	 __div0 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1cc90 	 _IO_new_file_finish 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+e15c 	 _int_memalign 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+341b0 	 _longjmp_unwind 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1d10c 	 _IO_new_file_attach 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+4a33c 	 _dl_relocate_object 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1ac18 	 __wunderflow 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+954c 	 __uflow 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+20afc 	 _dl_dst_count 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+3fb30 	 _IO_sscanf 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+302c4 	 __assert_fail 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1a468 	 __flockfile 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+30d08 	 _nl_find_msg 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+91b4 	 _IO_least_marker 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1a7b0 	 _IO_switch_to_wbackup_area 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+a340 	 _IO_list_resetlock 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+548f8 	 __divsi3 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+2082c 	 __twalk 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+3fb50 	 _IO_getline 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+422e4 	 __setmntent 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+4972c 	 fread_unlocked 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1eafc 	 strcmp 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1aac0 	 _IO_wdefault_uflow 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+34c50 	 __mpn_rshift 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+25a40 	 __gconv_get_alias_db 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+10340 	 __default_sa_restorer 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+2eeb4 	 _nl_find_locale 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+37704 	 __memchr 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+b3c0 	 __malloc_check_init 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+3ff30 	 __mbsrtowcs 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+427a4 	 __addmntent 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+36a9c 	 __fopen_maybe_mmap 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+fa50 	 __libc_enable_asynccancel 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+9630 	 _IO_setb 	 10 	 40 	 3 	 12 	 1 	 2 	 1 
+55d20 	 _fini 	 12 	 45 	 4 	 13 	 0 	 1 	 0 
+f040 	 __mempcpy 	 24 	 72 	 22 	 64 	 4 	 4 	 3 
+2369c 	 _dl_unload_cache 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+10350 	 __default_rt_sa_restorer 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1d19c 	 _IO_new_file_setbuf 	 0 	 0 	 4 	 16 	 1 	 1 	 1 
+1bed8 	 _IO_wfile_seekoff 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1b534 	 _IO_wfile_underflow 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+36794 	 _IO_file_doallocate 	 7 	 28 	 12 	 48 	 3 	 1 	 3 
+1f4ec 	 __wcsrtombs 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+d610 	 _int_malloc 	 226 	 904 	 313 	 1252 	 2 	 8 	 1 
+f270 	 _wordcopy_fwd_dest_aligned 	 26 	 104 	 12 	 48 	 0 	 2 	 0 
+2dfdc 	 __gconv_compare_alias_cache 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1b298 	 _IO_init_wmarker 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+2e73c 	 setlocale 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+38cb8 	 __getclktck 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+e534 	 _int_valloc 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1e3c8 	 _IO_file_read 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1fdfc 	 __libc_fork 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+3fcb4 	 _IO_vsscanf 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+37928 	 __strsep_g 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+39448 	 _dl_mcount 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+385c0 	 __libc_lseek 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+259fc 	 _dl_mcount_wrapper_check 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1aa08 	 _IO_wdefault_finish 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1e448 	 _IO_new_file_write 	 8 	 32 	 0 	 0 	 1 	 1 	 1 
+303d4 	 __ctype_b_loc 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+fa40 	 __mremap 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+18d58 	 __printf_fphex 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+37688 	 __strndup 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+37c98 	 __mbsinit 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+41f08 	 __tzfile_compute 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+25a30 	 __gconv_get_modules_db 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+f560 	 __uname 	 0 	 0 	 0 	 0 	 1 	 1 	 1 
+1b1ac 	 _IO_sputbackwc 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+2718c 	 __gconv_read_conf 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+398e4 	 __libc_dlclose 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+267c0 	 __gconv_close_transform 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1b3b8 	 _IO_unsave_wmarkers 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1cd10 	 _IO_file_open 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+31924 	 _nl_init_domain_conv 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+22778 	 _dl_map_object 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1f78c 	 __mbsnrtowcs 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+559ac 	 _nl_archive_subfreeres 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+a318 	 _IO_list_unlock 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+f59c 	 __fxstat64 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+34fdc 	 __mpn_mul_1 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1fe60 	 __getuid 	 0 	 0 	 0 	 0 	 0 	 1 	 0 
+9250 	 _IO_switch_to_get_mode 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+43fb8 	 _IO_vfscanf 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+4ea94 	 __strtof_internal 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+36d6c 	 _IO_getdelim 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+2e470 	 __gconv_release_cache 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+41324 	 __tzfile_read 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+36878 	 __new_fclose 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1ab28 	 __wuflow 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+37cbc 	 __sysconf 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+102cc 	 __sigaction 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+37b4c 	 __argz_stringify 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+d074 	 __libc_calloc 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+340cc 	 __isinfl 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+26544 	 __gconv_compare_alias 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+3a870 	 __vfwprintf 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+20300 	 __tfind 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+9bd4 	 _IO_default_seekoff 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+25844 	 _dl_dprintf 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+969c 	 _IO_doallocbuf 	 7 	 28 	 4 	 16 	 1 	 1 	 1 
+250cc 	 _dl_signal_error 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+d35c 	 __libc_independent_calloc 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+921c 	 _IO_switch_to_backup_area 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+8c38 	 exit 	 22 	 88 	 7 	 28 	 2 	 1 	 2 
+27e9c 	 __gconv_transform_internal_ucs4le 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+fa20 	 __munmap 	 0 	 0 	 0 	 0 	 1 	 1 	 1 
+d55c 	 __malloc_usable_size 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+2d420 	 __gconv_transliterate 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+37820 	 __strcasecmp 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+54a68 	 __modsi3 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1a7fc 	 _IO_wsetb 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+4022c 	 __tzstring 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+11d0c 	 _IO_vfprintf 	 1276 	 3934 	 977 	 3878 	 52 	 12 	 36 
+1fd54 	 __wcsmbs_named_conv 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+5467c 	 _IO_seekoff 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+fc1c 	 _dl_aux_init 	 299 	 1196 	 0 	 0 	 0 	 1 	 0 
+36c84 	 _IO_wfile_doallocate 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+10050 	 __setfpucw 	 1 	 4 	 0 	 0 	 0 	 1 	 0 
+3743c 	 _IO_str_underflow 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+102f8 	 __sigprocmask 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+34140 	 _setjmp 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+37110 	 fgets_unlocked 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+30448 	 __ctype_toupper_loc 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1a48c 	 __funlockfile 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+f570 	 _exit 	 0 	 0 	 0 	 0 	 0 	 1 	 0 
+be20 	 __malloc_set_state 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+8658 	 __libc_start_main 	 30 	 120 	 4 	 16 	 2 	 1 	 2 
+ea20 	 strlen 	 21 	 84 	 0 	 0 	 0 	 6 	 0 
+398a8 	 __libc_dlsym 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1ff30 	 __libc_write 	 165 	 168 	 0 	 0 	 0 	 1 	 0 
+49648 	 __vfscanf 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+99b8 	 _IO_init 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+2a130 	 __gconv_transform_internal_ucs2reverse 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1076c 	 __setenv 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+10870 	 __clearenv 	 0
+ 	 0 	 0 	 0 	 0 	 0 	 0 
+1ea14 	 strchr 	 13 	 28 	 0 	 0 	 0 	 1 	 0 
+a2dc 	 _IO_iter_end 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+3a358 	 _quicksort 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1d354 	 _IO_new_file_underflow 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+bca4 	 __malloc_get_state 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+8ec4 	 __libc_fatal 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+38c90 	 __get_phys_pages 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+f96c 	 __sbrk 	 16 	 64 	 2 	 8 	 2 	 2 	 1 
+a29c 	 _IO_default_seek 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+2035c 	 __tdelete 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1ffa0 	 __access 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+d568 	 __malloc_stats 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1a878 	 _IO_wdefault_pbackfail 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+37b90 	 __argz_add_sep 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1db14 	 _IO_new_file_overflow 	 19 	 76 	 15 	 60 	 3 	 2 	 2 
+39878 	 __libc_dlopen_mode 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+10780 	 __unsetenv 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1de34 	 _IO_new_file_seekoff 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+49d58 	 __mktime_internal 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+25400 	 _dl_sysdep_read_whole_file 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+38ca4 	 __get_avphys_pages 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+252dc 	 _dl_catch_error 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+8f84 	 _IO_un_link 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1d1d4 	 _IO_file_setbuf_mmap 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+a15c 	 _IO_default_pbackfail 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+36b84 	 __new_fopen 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1f064 	 __wmemcpy 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+a2e4 	 _IO_iter_next 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1fe68 	 __geteuid 	 0 	 0 	 0 	 0 	 0 	 1 	 0 
+f350 	 _wordcopy_bwd_aligned 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+11d0c 	 vfprintf 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+3fd28 	 strpbrk 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+91e8 	 _IO_switch_to_main_get_area 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+1007c 	 raise 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+a0d4 	 _IO_seekmark 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+31c1c 	 _nl_free_domain_conv 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+4b824 	 _dl_map_object_deps 	 0 	 0 	 0 	 0 	 0 	 0 	 0 
+2f828 	 _nl_load_locale_from_archive 	 0 	 0 	 0 	 0 	 0 	 0 	 0 

@@ -1,0 +1,698 @@
+sim-outorder: SimpleScalar/ARM Tool Set version 3.0 of November, 2000.
+Copyright (c) 1994-2000 by Todd M. Austin.  All Rights Reserved.
+This version of SimpleScalar is licensed for academic non-commercial use only.
+
+sim: command line: /home/eugen/simplescalar-olga-arm-testing/sim-outorder -config simconfig/cache-trace.cfg -containers:traceFileIn simpletest.trace.in -containers:groupingIn simpletest.grouping.in -containers:groupingTraceIn simpletest.grouptrace.in -containers:groupingPenalties false simpletest.ss 
+
+sim: simulation started @ Wed Sep 10 10:35:23 2008, options follow:
+
+sim-outorder: This simulator implements a very detailed out-of-order issue
+superscalar processor with a two-level memory system and speculative
+execution support.  This simulator is a performance simulator, tracking the
+latency of all pipeline operations.
+
+# -config                     # load configuration from a file
+# -dumpconfig                 # dump configuration to a file
+# -h                    false # print help message    
+# -v                    false # verbose operation     
+# -d                    false # enable debug message  
+# -i                    false # start in Dlite debugger
+-seed                       1 # random number generator seed (0 for timer seed)
+# -q                    false # initialize and terminate immediately
+# -chkpt               <null> # restore EIO trace execution from <fname>
+# -redir:sim           <null> # redirect simulator output to file (non-interactive only)
+# -redir:prog    simpletest.progoutput # redirect simulated program output to file
+# -redir:trace         <null> # redirect simulation trace to file 
+# -containers:traceFileOut simpletest.trace.out # this is for the first run, this is where the trace information is stored for the second run
+# -containers:traceFileIn simpletest.trace.in # this is the second run, after the trace data is gathered, the param is the trace file name
+# -containers:compileTraceOut simpletest.trace.compiler # this information is used for the second compilation, it marks the functions that access heap memory
+# -containers:FullTraceOut simpletest.trace.full # this file has the full trace of functions and memory calls (it gets HUGE) use for debug only
+# -containers:groupingIn simpletest.grouping.in # this file has grouping of functions into containers, if not specified every function will be placed into individual containers
+# -containers:groupingOut       <null> # this file will create a grouping for the benchmark
+-containers:groupingOrder            2 # How many functions to include in a group ( NOT IMPLEMENTED YET )
+# -containers:groupingTraceOut       <null> # this file writes the trace out for the grouping of functions into containers
+# -containers:groupingTraceIn simpletest.grouptrace.in # this is the second run, after the trace data is gathered, the param is the trace file name for the container grouping
+# -containers:groupingPenalties        false # if set to true the container groups penalties are used instead of the individual functions ( which is the default)
+-nice                       0 # simulator scheduling priority
+-max:inst                   0 # maximum number of inst's to execute
+# -ptracepipe               0 # The pipe for the ptrace communications
+-profile                false # look for areas with significant IPCs
+-fastfwd                    0 # number of insts skipped before timing starts
+# -ptrace              <null> # generate pipetrace, i.e., <fname|stdout|stderr> <range>
+-fetch:ifqsize              1 # instruction fetch queue size (in insts)
+-fetch:mplat                3 # extra branch mis-prediction latency
+-fetch:speed                1 # speed of front-end of machine relative to execution core
+-bpred                  bimod # branch predictor type {nottaken|taken|perfect|bimod|2lev|comb}
+-bpred:bimod     2048 # bimodal predictor config (<table size>)
+-bpred:2lev      1 1024 8 0 # 2-level predictor config (<l1size> <l2size> <hist_size> <xor>)
+-bpred:comb      1024 # combining predictor config (<meta_table_size>)
+-bpred:ras                  8 # return address stack size (0 for no return stack)
+-bpred:btb       512 4 # BTB config (<num_sets> <associativity>)
+# -bpred:spec_update       <null> # speculative predictors update in {ID|WB} (default non-spec)
+-decode:width               4 # instruction decode B/W (insts/cycle)
+-issue:width                4 # instruction issue B/W (insts/cycle)
+-issue:inorder           true # run pipeline with in-order issue
+-issue:wrongpath        false # issue instructions down wrong execution paths
+-commit:width               4 # instruction commit B/W (insts/cycle)
+-ruu:size                  16 # register update unit (RUU) size
+-lsq:size                   8 # load/store queue (LSQ) size
+-lsq:perfect            false # perfect memory disambiguation
+-cache:dl1       dl1:16:32:64:l # l1 data cache config, i.e., {<config>|none}
+-cache:dl1lat               1 # l1 data cache hit latency (in cycles)
+-cache:dl2               none # l2 data cache config, i.e., {<config>|none}
+-cache:dl2lat               1 # l2 data cache hit latency (in cycles)
+-cache:il1       il1:32:32:32:l # l1 inst cache config, i.e., {<config>|dl1|dl2|none}
+-cache:cont_il1  il1:512:32:1:l # l1 container permission cache config, i.e., {<config>|none}
+-cache:il1lat               1 # l1 instruction cache hit latency (in cycles)
+-cache:il2               none # l2 instruction cache config, i.e., {<config>|dl2|none}
+-cache:il2lat               1 # l2 instruction cache hit latency (in cycles)
+-cache:flush            false # flush caches on system calls
+-cache:icompress        false # convert 64-bit inst addresses to 32-bit inst equivalents
+-mem:lat         15 2 # memory access latency (<first_chunk> <inter_chunk>)
+-mem:width                  8 # memory access bus width (in bytes)
+-mem:pipelined          false # memory accesses are fully pipelined
+-tlb:itlb        itlb:16:4096:4:l # instruction TLB config, i.e., {<config>|none}
+-tlb:dtlb        dtlb:32:4096:4:l # data TLB config, i.e., {<config>|none}
+-tlb:lat                   30 # inst/data TLB miss latency (in cycles)
+-res:ialu                   2 # total number of integer ALU's available
+-res:imult                  1 # total number of integer multiplier/dividers available
+-res:memport                1 # total number of memory system ports available (to CPU)
+-res:fpalu                  1 # total number of floating point ALU's available
+-res:fpmult                 1 # total number of floating point multiplier/dividers available
+# -pcstat              <null> # profile stat(s) against text addr's (mult uses ok)
+-bugcompat              false # operate in backward-compatible bugs mode (for testing only)
+
+  Pipetrace range arguments are formatted as follows:
+
+    {{@|#}<start>}:{{@|#|+}<end>}
+
+  Both ends of the range are optional, if neither are specified, the entire
+  execution is traced.  Ranges that start with a `@' designate an address
+  range to be traced, those that start with an `#' designate a cycle count
+  range.  All other range values represent an instruction count range.  The
+  second argument, if specified with a `+', indicates a value relative
+  to the first argument, e.g., 1000:+100 == 1000:1100.  Program symbols may
+  be used in all contexts.
+
+    Examples:   -ptrace FOO.trc #0:#1000
+                -ptrace BAR.trc @2000:
+                -ptrace BLAH.trc :1500
+                -ptrace UXXE.trc :
+                -ptrace FOOBAR.trc @main:+278
+
+  Branch predictor configuration examples for 2-level predictor:
+    Configurations:   N, M, W, X
+      N   # entries in first level (# of shift register(s))
+      W   width of shift register(s)
+      M   # entries in 2nd level (# of counters, or other FSM)
+      X   (yes-1/no-0) xor history and address for 2nd level index
+    Sample predictors:
+      GAg     : 1, W, 2^W, 0
+      GAp     : 1, W, M (M > 2^W), 0
+      PAg     : N, W, 2^W, 0
+      PAp     : N, W, M (M == 2^(N+W)), 0
+      gshare  : 1, W, 2^W, 1
+  Predictor `comb' combines a bimodal and a 2-level predictor.
+
+  The cache config parameter <config> has the following format:
+
+    <name>:<nsets>:<bsize>:<assoc>:<repl>
+
+    <name>   - name of the cache being defined
+    <nsets>  - number of sets in the cache
+    <bsize>  - block size of the cache
+    <assoc>  - associativity of the cache
+    <repl>   - block replacement strategy, 'l'-LRU, 'f'-FIFO, 'r'-random
+
+    Examples:   -cache:dl1 dl1:4096:32:1:l
+                -dtlb dtlb:128:4096:32:r
+
+  Cache levels can be unified by pointing a level of the instruction cache
+  hierarchy at the data cache hiearchy using the "dl1" and "dl2" cache
+  configuration arguments.  Most sensible combinations are supported, e.g.,
+
+    A unified l2 cache (il2 is pointed at dl2):
+      -cache:il1 il1:128:64:1:l -cache:il2 dl2
+      -cache:dl1 dl1:256:32:1:l -cache:dl2 ul2:1024:64:2:l
+
+    Or, a fully unified cache hierarchy (il1 pointed at dl1):
+      -cache:il1 dl1
+      -cache:dl1 ul1:256:32:1:l -cache:dl2 ul2:1024:64:2:l
+
+
+
+sim: ** starting performance simulation **
+warning: cache: access error: access spans block, addr 0x000080d4
+warning: invalid/unimplemented syscall 122, PC=0x0000f1f0, winging it
+warning: invalid/unimplemented syscall 221, PC=0x0000f3c4, winging it
+warning: invalid/unimplemented syscall 221, PC=0x0000f3c4, winging it
+warning: invalid/unimplemented syscall 221, PC=0x0000f3c4, winging it
+warning: invalid/unimplemented syscall 201, PC=0x0001faf8, winging it
+warning: invalid/unimplemented syscall 199, PC=0x0001faf0, winging it
+warning: invalid/unimplemented syscall 202, PC=0x0001fb08, winging it
+warning: invalid/unimplemented syscall 200, PC=0x0001fb00, winging it
+FCALL   : 19 0 _start calling __libc_start_main
+FCALL   : 4 0 __libc_start_main calling _dl_aux_init
+FRET    : 4 0 _dl_aux_init return to __libc_start_main
+FCALL   : 6 0 __libc_start_main calling uname
+FCALL   : 12 0 uname calling __errno_location
+FRET    : 12 0 __errno_location return to uname
+FRET    : 6 0 uname return to __libc_start_main
+FCALL   : 5 0 __libc_start_main calling __open
+FRET    : 5 0 __open return to __libc_start_main
+FCALL   : 5 0 __libc_start_main calling __read
+FRET    : 5 0 __read return to __libc_start_main
+FCALL   : 4 0 __libc_start_main calling __libc_close
+FRET    : 4 0 __libc_close return to __libc_start_main
+FCALL   : 7 0 __libc_start_main calling __libc_check_standard_fds
+FCALL   : 9 0 __libc_check_standard_fds calling __libc_fcntl
+FCALL   : 12 0 __libc_fcntl calling __errno_location
+FRET    : 12 0 __errno_location return to __libc_fcntl
+FCALL   : 12 0 __libc_fcntl calling __errno_location
+FRET    : 12 0 __errno_location return to __libc_fcntl
+FRET    : 9 0 __libc_fcntl return to __libc_check_standard_fds
+FCALL   : 12 0 __libc_check_standard_fds calling __errno_location
+FRET    : 12 0 __errno_location return to __libc_check_standard_fds
+FCALL   : 9 0 __libc_check_standard_fds calling __libc_fcntl
+FCALL   : 12 0 __libc_fcntl calling __errno_location
+FRET    : 12 0 __errno_location return to __libc_fcntl
+FCALL   : 12 0 __libc_fcntl calling __errno_location
+FRET    : 12 0 __errno_location return to __libc_fcntl
+FRET    : 9 0 __libc_fcntl return to __libc_check_standard_fds
+FCALL   : 12 0 __libc_check_standard_fds calling __errno_location
+FRET    : 12 0 __errno_location return to __libc_check_standard_fds
+FCALL   : 9 0 __libc_check_standard_fds calling __libc_fcntl
+FCALL   : 12 0 __libc_fcntl calling __errno_location
+FRET    : 12 0 __errno_location return to __libc_fcntl
+FCALL   : 12 0 __libc_fcntl calling __errno_location
+FRET    : 12 0 __errno_location return to __libc_fcntl
+FRET    : 9 0 __libc_fcntl return to __libc_check_standard_fds
+FCALL   : 12 0 __libc_check_standard_fds calling __errno_location
+FRET    : 12 0 __errno_location return to __libc_check_standard_fds
+FRET    : 7 0 __libc_check_standard_fds return to __libc_start_main
+FCALL   : 12 0 __libc_start_main calling __libc_init_first
+FCALL   : 3 0 __libc_init_first calling __setfpucw
+FRET    : 3 0 __setfpucw return to __libc_init_first
+FCALL   : 9 0 __libc_init_first calling __libc_init_secure
+FCALL   : 3 0 __libc_init_secure calling geteuid
+FRET    : 3 0 geteuid return to __libc_init_secure
+FCALL   : 3 0 __libc_init_secure calling getuid
+FRET    : 3 0 getuid return to __libc_init_secure
+FCALL   : 3 0 __libc_init_secure calling getegid
+FRET    : 3 0 getegid return to __libc_init_secure
+FCALL   : 3 0 __libc_init_secure calling getgid
+FRET    : 3 0 getgid return to __libc_init_secure
+FRET    : 9 0 __libc_init_secure return to __libc_init_first
+FCALL   : 10 0 __libc_init_first calling _dl_non_dynamic_init
+FCALL   : 5 0 _dl_non_dynamic_init calling getpagesize
+FRET    : 5 0 getpagesize return to _dl_non_dynamic_init
+FCALL   : 12 0 _dl_non_dynamic_init calling getenv
+FCALL   : 5 0 getenv calling strlen
+FRET    : 5 0 strlen return to getenv
+FRET    : 12 0 getenv return to _dl_non_dynamic_init
+FCALL   : 12 0 _dl_non_dynamic_init calling getenv
+FCALL   : 5 0 getenv calling strlen
+FRET    : 5 0 strlen return to getenv
+FRET    : 12 0 getenv return to _dl_non_dynamic_init
+FCALL   : 32 0 _dl_non_dynamic_init calling _dl_init_paths
+FCALL   : 5 0 _dl_init_paths calling _dl_important_hwcaps
+FRET    : 5 0 _dl_important_hwcaps return to _dl_init_paths
+FCALL   : 21 0 _dl_init_paths calling malloc
+FCALL   : 5 0 malloc calling getpagesize
+FRET    : 5 0 getpagesize return to malloc
+FCALL   : 6 0 malloc calling __register_atfork
+FCALL   : 21 0 __register_atfork calling malloc
+FCALL   : 16 0 malloc calling _int_malloc
+FCALL   : 6 0 _int_malloc calling __default_morecore
+FCALL   : 7 0 __default_morecore calling sbrk
+FCALL   : 5 0 sbrk calling __brk
+FRET    : 5 0 __brk return to sbrk
+FCALL   : 5 0 sbrk calling __brk
+FRET    : 5 0 __brk return to sbrk
+FRET    :warning: invalid/unimplemented syscall 197, PC=0x0000f238, winging it
+ 7 0 sbrk return to __default_morecore
+FRET    : 6 0 __default_morecore return to _int_malloc
+FCALL   : 6 0 _int_malloc calling __default_morecore
+FCALL   : 7 0 __default_morecore calling sbrk
+FRET    : 7 0 sbrk return to __default_morecore
+FRET    : 6 0 __default_morecore return to _int_malloc
+FRET    : 16 2 _int_malloc return to malloc
+FRET    : 21 2 malloc return to __register_atfork
+FCALL   : 21 -2 __register_atfork calling malloc
+FCALL   : 16 -2 malloc calling _int_malloc
+FRET    : 16 2 _int_malloc return to malloc
+FRET    : 21 2 malloc return to __register_atfork
+FCALL   : 21 -2 __register_atfork calling malloc
+FCALL   : 16 -2 malloc calling _int_malloc
+FRET    : 16 2 _int_malloc return to malloc
+FRET    : 21 2 malloc return to __register_atfork
+FRET    : 6 4 __register_atfork return to malloc
+FCALL   : 21 -4 malloc calling malloc
+FCALL   : 16 -4 malloc calling _int_malloc
+FRET    : 16 2 _int_malloc return to malloc
+FRET    : 21 5 malloc return to malloc
+FRET    : 21 5 malloc return to _dl_init_paths
+FCALL   : 21 0 _dl_init_paths calling malloc
+FCALL   : 16 -5 malloc calling _int_malloc
+FRET    : 16 2 _int_malloc return to malloc
+FRET    : 21 5 malloc return to _dl_init_paths
+FCALL   : 12 -3 _dl_init_paths calling getenv
+FCALL   : 5 0 getenv calling strlen
+FRET    : 5 0 strlen return to getenv
+FRET    : 12 0 getenv return to _dl_init_paths
+FCALL   : 12 -3 _dl_init_paths calling getenv
+FCALL   : 5 0 getenv calling strlen
+FRET    : 5 0 strlen return to getenv
+FRET    : 12 0 getenv return to _dl_init_paths
+FCALL   : 12 -3 _dl_init_paths calling getenv
+FCALL   : 5 0 getenv calling strlen
+FRET    : 5 0 strlen return to getenv
+FRET    : 12 0 getenv return to _dl_init_paths
+FCALL   : 12 -3 _dl_init_paths calling getenv
+FCALL   : 5 0 getenv calling strlen
+FRET    : 5 0 strlen return to getenv
+FRET    : 12 0 getenv return to _dl_init_paths
+FCALL   : 6 -3 _dl_init_paths calling __init_misc
+FCALL   : 5 0 __init_misc calling strrchr
+FCALL   : 4 0 strrchr calling index
+FRET    : 4 0 index return to strrchr
+FRET    : 5 0 strrchr return to __init_misc
+FRET    : 6 0 __init_misc return to _dl_init_paths
+FCALL   : 6 -3 _dl_init_paths calling __cxa_atexit
+FCALL   : 6 0 __cxa_atexit calling __new_exitfn
+FRET    : 6 0 __new_exitfn return to __cxa_atexit
+FRET    : 6 0 __cxa_atexit return to _dl_init_paths
+FCALL   : 5 -3 _dl_init_paths calling __libc_csu_init
+FCALL   : 7 0 __libc_csu_init calling _init
+FRET    : 7 0 _init return to __libc_csu_init
+FRET    : 5 0 __libc_csu_init return to _dl_init_paths
+FCALL   : 6 -3 _dl_init_paths calling main
+FCALL   : 6 0 main calling foo
+FCALL   : 7 0 foo calling printf
+FCALL   : 22 0 printf calling _IO_vfprintf
+FCALL   : 12 0 _IO_vfprintf calling __errno_location
+FRET    : 12 0 __errno_location return to _IO_vfprintf
+FCALL   : 10 0 _IO_vfprintf calling _IO_flockfile
+FRET    : 10 0 _IO_flockfile return to _IO_vfprintf
+FCALL   : 12 0 _IO_vfprintf calling _IO_new_file_xsputn
+FCALL   : 10 0 _IO_new_file_xsputn calling _IO_file_overflow
+FCALL   : 9 0 _IO_file_overflow calling _IO_doallocbuf
+FCALL   : 11 0 _IO_doallocbuf calling _IO_file_doallocate
+FCALL   : 6 0 _IO_file_doallocate calling _IO_file_stat
+FCALL   : 6 0 _IO_file_stat calling ___fxstat64
+FCALL   : 12 0 ___fxstat64 calling __errno_location
+FRET    : 12 0 __errno_location return to ___fxstat64
+FRET    : 6 0 ___fxstat64 return to _IO_file_stat
+FRET    : 6 0 _IO_file_stat return to _IO_file_doallocate
+FCALL   : 3 0 _IO_file_doallocate calling __mmap
+FRET    : 3 0 __mmap return to _IO_file_doallocate
+FCALL   : 8 0 _IO_file_doallocate calling _IO_setb
+FRET    : 8 0 _IO_setb return to _IO_file_doallocate
+FRET    : 11 0 _IO_file_doallocate return to _IO_doallocbuf
+FRET    : 9 0 _IO_doallocbuf return to _IO_file_overflow
+FCALL   : 11 0 _IO_file_overflow calling _IO_new_do_write
+FRET    : 11 0 _IO_new_do_write return to _IO_file_overflow
+FRET    : 10 0 _IO_file_overflow return to _IO_new_file_xsputn
+FCALL   : 3 0 _IO_new_file_xsputn calling __umodsi3
+FRET    : 3 0 __umodsi3 return to _IO_new_file_xsputn
+FCALL   : 6 0 _IO_new_file_xsputn calling _IO_default_xsputn
+FRET    : 6 1 _IO_default_xsputn return to _IO_new_file_xsputn
+FRET    : 12 1 _IO_new_file_xsputn return to _IO_vfprintf
+FCALL   : 8 -1 _IO_vfprintf calling _IO_funlockfile
+FRET    : 8 0 _IO_funlockfile return to _IO_vfprintf
+FRET    : 22 1 _IO_vfprintf return to printf
+FRET    : 7 1 printf return to foo
+FCALL   : 21 -1 foo calling malloc
+FCALL   : 16 -5 malloc calling _int_malloc
+FRET    : 16 2 _int_malloc return to malloc
+FRET    : 21 5 malloc return to foo
+FRET    : 6 3 foo return to main
+FCALL   : 7 -3 main calling bar
+FCALL   : 5 0 bar calling qcount
+FRET    : 5 0 qcount return to bar
+FCALL   : 5 0 bar calling qcount
+FRET    : 5 0 qcount return to bar
+FCALL   : 6 0 bar calling foo
+FCALL   : 7 -3 foo calling printf
+FCALL   : 22 -1 printf calling _IO_vfprintf
+FCALL   : 12 -1 _IO_vfprintf calling __errno_location
+FRET    : 12 0 __errno_location return to _IO_vfprintf
+FCALL   : 10 -1 _IO_vfprintf calling _IO_flockfile
+FRET    : 10 0 _IO_flockfile return to _IO_vfprintf
+FCALL   : 12 -1 _IO_vfprintf calling _IO_new_file_xsputn
+FRET    : 12 1 _IO_new_file_xsputn return to _IO_vfprintf
+FCALL   : 8 -1 _IO_vfprintf calling _IO_funlockfile
+FRET    : 8 0 _IO_funlockfile return to _IO_vfprintf
+FRET    : 22 1 _IO_vfprintf return to printf
+FRET    : 7 1 printf return to foo
+FCALL   : 21 -3 foo calling malloc
+FCALL   : 16 -5 malloc calling _int_malloc
+FRET    : 16 2 _int_malloc return to malloc
+FRET    : 21 5 malloc return to foo
+FRET    : 6 3 foo return to bar
+FCALL   : 5 -3 bar calling qcount
+FRET    : 5 0 qcount return to bar
+FCALL   : 6 -3 bar calling foo
+FCALL   : 7 -3 foo calling printf
+FCALL   : 22 -1 printf calling _IO_vfprintf
+FCALL   : 12 -1 _IO_vfprintf calling __errno_location
+FRET    : 12 0 __errno_location return to _IO_vfprintf
+FCALL   : 10 -1 _IO_vfprintf calling _IO_flockfile
+FRET    : 10 0 _IO_flockfile return to _IO_vfprintf
+FCALL   : 12 -1 _IO_vfprintf calling _IO_new_file_xsputn
+FRET    : 12 1 _IO_new_file_xsputn return to _IO_vfprintf
+FCALL   : 8 -1 _IO_vfprintf calling _IO_funlockfile
+FRET    : 8 0 _IO_funlockfile return to _IO_vfprintf
+FRET    : 22 1 _IO_vfprintf return to printf
+FRET    : 7 1 printf return to foo
+FCALL   : 21 -3 foo calling malloc
+FCALL   : 16 -5 malloc calling _int_malloc
+FRET    : 16 2 _int_malloc return to malloc
+FRET    : 21 5 malloc return to foo
+FRET    : 6 3 foo return to bar
+FCALL   : 5 -3 bar calling qcount
+FRET    : 5 0 qcount return to bar
+FCALL   : 6 -3 bar calling foo
+FCALL   : 7 -3 foo calling printf
+FCALL   : 22 -1 printf calling _IO_vfprintf
+FCALL   : 12 -1 _IO_vfprintf calling __errno_location
+FRET    : 12 0 __errno_location return to _IO_vfprintf
+FCALL   : 10 -1 _IO_vfprintf calling _IO_flockfile
+FRET    : 10 0 _IO_flockfile return to _IO_vfprintf
+FCALL   : 12 -1 _IO_vfprintf calling _IO_new_file_xsputn
+FRET    : 12 1 _IO_new_file_xsputn return to _IO_vfprintf
+FCALL   : 8 -1 _IO_vfprintf calling _IO_funlockfile
+FRET    : 8 0 _IO_funlockfile return to _IO_vfprintf
+FRET    : 22 1 _IO_vfprintf return to printf
+FRET    : 7 1 printf return to foo
+FCALL   : 21 -3 foo calling malloc
+FCALL   : 16 -5 malloc calling _int_malloc
+FRET    : 16 2 _int_malloc return to malloc
+FRET    : 21 5 malloc return to foo
+FRET    : 6 3 foo return to bar
+FCALL   : 5 -3 bar calling qcount
+FRET    : 5 0 qcount return to bar
+FCALL   : 6 -3 bar calling foo
+FCALL   : 7 -3 foo calling printf
+FCALL   : 22 -1 printf calling _IO_vfprintf
+FCALL   : 12 -1 _IO_vfprintf calling __errno_location
+FRET    : 12 0 __errno_location return to _IO_vfprintf
+FCALL   : 10 -1 _IO_vfprintf calling _IO_flockfile
+FRET    : 10 0 _IO_flockfile return to _IO_vfprintf
+FCALL   : 12 -1 _IO_vfprintf calling _IO_new_file_xsputn
+FRET    : 12 1 _IO_new_file_xsputn return to _IO_vfprintf
+FCALL   : 8 -1 _IO_vfprintf calling _IO_funlockfile
+FRET    : 8 0 _IO_funlockfile return to _IO_vfprintf
+FRET    : 22 1 _IO_vfprintf return to printf
+FRET    : 7 1 printf return to foo
+FCALL   : 21 -3 foo calling malloc
+FCALL   : 16 -5 malloc calling _int_malloc
+FRET    : 16 2 _int_malloc return to malloc
+FRET    : 21 5 malloc return to foo
+FRET    : 6 3 foo return to bar
+FCALL   : 5 -3 bar calling qcount
+FRET    : 5 0 qcount return to bar
+FCALL   : 6 -3 bar calling foo
+FCALL   : 7 -3 foo calling printf
+FCALL   : 22 -1 printf calling _IO_vfprintf
+FCALL   : 12 -1 _IO_vfprintf calling __errno_location
+FRET    : 12 0 __errno_location return to _IO_vfprintf
+FCALL   : 10 -1 _IO_vfprintf calling _IO_flockfile
+FRET    : 10 0 _IO_flockfile return to _IO_vfprintf
+FCALL   : 12 -1 _IO_vfprintf calling _IO_new_file_xsputn
+FRET    : 12 1 _IO_new_file_xsputn return to _IO_vfprintf
+FCALL   : 8 -1 _IO_vfprintf calling _IO_funlockfile
+FRET    : 8 0 _IO_funlockfile return to _IO_vfprintf
+FRET    : 22 1 _IO_vfprintf return to printf
+FRET    : 7 1 printf return to foo
+FCALL   : 21 -3 foo calling malloc
+FCALL   : 16 -5 malloc calling _int_malloc
+FRET    : 16 2 _int_malloc return to malloc
+FRET    : 21 5 malloc return to foo
+FRET    : 6 3 foo return to bar
+FCALL   : 5 -3 bar calling qcount
+FRET    : 5 0 qcount return to bar
+FCALL   : 6 -3 bar calling foo
+FCALL   : 7 -3 foo calling printf
+FCALL   : 22 -1 printf calling _IO_vfprintf
+FCALL   : 12 -1 _IO_vfprintf calling __errno_location
+FRET    : 12 0 __errno_location return to _IO_vfprintf
+FCALL   : 10 -1 _IO_vfprintf calling _IO_flockfile
+FRET    : 10 0 _IO_flockfile return to _IO_vfprintf
+FCALL   : 12 -1 _IO_vfprintf calling _IO_new_file_xsputn
+FRET    : 12 1 _IO_new_file_xsputn return to _IO_vfprintf
+FCALL   : 8 -1 _IO_vfprintf calling _IO_funlockfile
+FRET    : 8 0 _IO_funlockfile return to _IO_vfprintf
+FRET    : 22 1 _IO_vfprintf return to printf
+FRET    : 7 1 printf return to foo
+FCALL   : 21 -3 foo calling malloc
+FCALL   : 16 -5 malloc calling _int_malloc
+FRET    : 16 2 _int_malloc return to malloc
+FRET    : 21 5 malloc return to foo
+FRET    : 6 3 foo return to bar
+FCALL   : 5 -3 bar calling qcount
+FRET    : 5 0 qcount return to bar
+FCALL   : 6 -3 bar calling foo
+FCALL   : 7 -3 foo calling printf
+FCALL   : 22 -1 printf calling _IO_vfprintf
+FCALL   : 12 -1 _IO_vfprintf calling __errno_location
+FRET    : 12 0 __errno_location return to _IO_vfprintf
+FCALL   : 10 -1 _IO_vfprintf calling _IO_flockfile
+FRET    : 10 0 _IO_flockfile return to _IO_vfprintf
+FCALL   : 12 -1 _IO_vfprintf calling _IO_new_file_xsputn
+FRET    : 12 1 _IO_new_file_xsputn return to _IO_vfprintf
+FCALL   : 8 -1 _IO_vfprintf calling _IO_funlockfile
+FRET    : 8 0 _IO_funlockfile return to _IO_vfprintf
+FRET    : 22 1 _IO_vfprintf return to printf
+FRET    : 7 1 printf return to foo
+FCALL   : 21 -3 foo calling malloc
+FCALL   : 16 -5 malloc calling _int_malloc
+FRET    : 16 2 _int_malloc return to malloc
+FRET    : 21 5 malloc return to foo
+FRET    : 6 3 foo return to bar
+FCALL   : 5 -3 bar calling qcount
+FRET    : 5 0 qcount return to bar
+FCALL   : 6 -3 bar calling foo
+FCALL   : 7 -3 foo calling printf
+FCALL   : 22 -1 printf calling _IO_vfprintf
+FCALL   : 12 -1 _IO_vfprintf calling __errno_location
+FRET    : 12 0 __errno_location return to _IO_vfprintf
+FCALL   : 10 -1 _IO_vfprintf calling _IO_flockfile
+FRET    : 10 0 _IO_flockfile return to _IO_vfprintf
+FCALL   : 12 -1 _IO_vfprintf calling _IO_new_file_xsputn
+FRET    : 12 1 _IO_new_file_xsputn return to _IO_vfprintf
+FCALL   : 8 -1 _IO_vfprintf calling _IO_funlockfile
+FRET    : 8 0 _IO_funlockfile return to _IO_vfprintf
+FRET    : 22 1 _IO_vfprintf return to printf
+FRET    : 7 1 printf return to foo
+FCALL   : 21 -3 foo calling malloc
+FCALL   : 16 -5 malloc calling _int_malloc
+FRET    : 16 2 _int_malloc return to malloc
+FRET    : 21 5 malloc return to foo
+FRET    : 6 3 foo return to bar
+FCALL   : 5 -3 bar calling qcount
+FRET    : 5 0 qcount return to bar
+FCALL   : 6 -3 bar calling foo
+FCALL   : 7 -3 foo calling printf
+FCALL   : 22 -1 printf calling _IO_vfprintf
+FCALL   : 12 -1 _IO_vfprintf calling __errno_location
+FRET    : 12 0 __errno_location return to _IO_vfprintf
+FCALL   : 10 -1 _IO_vfprintf calling _IO_flockfile
+FRET    : 10 0 _IO_flockfile return to _IO_vfprintf
+FCALL   : 12 -1 _IO_vfprintf calling _IO_new_file_xsputn
+FRET    : 12 1 _IO_new_file_xsputn return to _IO_vfprintf
+FCALL   : 8 -1 _IO_vfprintf calling _IO_faafooaafooaafooaafooaafooaafooaafooaafooaafooaafooaafoowarning: invalid/unimplemented syscall 91, PC=0x0000f6b0, winging it
+
+sim: ** simulation statistics **
+sim_num_insn                  13045 # total number of instructions committed
+sim_num_uops                  21433 # total number of UOPs executed
+sim_avg_flowlen              1.6430 # uops per instruction
+sim_num_refs                   5793 # total number of loads and stores committed
+sim_num_loads                  3928 # total number of loads committed
+sim_num_stores            1865.0000 # total number of stores committed
+sim_num_branches               2302 # total number of branches committed
+sim_elapsed_time                  1 # total simulation time in seconds
+sim_inst_rate            13045.0000 # simulation speed (in insts/sec)
+sim_total_insn                21432 # total number of instructions executed
+sim_total_refs                 5793 # total number of loads and stores executed
+sim_total_loads                3928 # total number of loads executed
+sim_total_stores          1865.0000 # total number of stores executed
+sim_total_branches             2302 # total number of branches executed
+sim_cycle                     37244 # total simulation time in cycles
+sim_IPC                      0.3503 # instructions per cycle
+sim_CPI                      2.8550 # cycles per instruction
+sim_exec_BW                  0.5754 # total instructions (mis-spec + committed) per cycle
+sim_IPB                      5.6668 # instruction per branch
+IFQ_count                     20830 # cumulative IFQ occupancy
+IFQ_fcount                    20830 # cumulative IFQ full count
+ifq_occupancy                0.5593 # avg IFQ occupancy (insn's)
+ifq_rate                     0.5754 # avg IFQ dispatch rate (insn/cycle)
+ifq_latency                  0.9719 # avg IFQ occupant latency (cycle's)
+ifq_full                     0.5593 # fraction of time (cycle's) IFQ was full
+RUU_count                     59455 # cumulative RUU occupancy
+RUU_fcount                        0 # cumulative RUU full count
+ruu_occupancy                1.5964 # avg RUU occupancy (insn's)
+ruu_rate                     0.5754 # avg RUU dispatch rate (insn/cycle)
+ruu_latency                  2.7741 # avg RUU occupant latency (cycle's)
+ruu_full                     0.0000 # fraction of time (cycle's) RUU was full
+LSQ_count                     28908 # cumulative LSQ occupancy
+LSQ_fcount                      343 # cumulative LSQ full count
+lsq_occupancy                0.7762 # avg LSQ occupancy (insn's)
+lsq_rate                     0.5754 # avg LSQ dispatch rate (insn/cycle)
+lsq_latency                  1.3488 # avg LSQ occupant latency (cycle's)
+lsq_full                     0.0092 # fraction of time (cycle's) LSQ was full
+sim_slip                     140680 # total number of slip cycles
+avg_sim_slip                10.7842 # the average slip between issue and retirement
+bpred_bimod.lookups            2313 # total number of bpred lookups
+bpred_bimod.updates            2302 # total number of updates
+bpred_bimod.addr_hits          1961 # total number of address-predicted hits
+bpred_bimod.dir_hits           2067 # total number of direction-predicted hits (includes addr-hits)
+bpred_bimod.misses              235 # total number of misses
+bpred_bimod.jr_hits               0 # total number of address-predicted hits for JR's
+bpred_bimod.jr_seen               0 # total number of JR's seen
+bpred_bimod.jr_non_ras_hits.PP            0 # total number of address-predicted hits for non-RAS JR's
+bpred_bimod.jr_non_ras_seen.PP            0 # total number of non-RAS JR's seen
+bpred_bimod.bpred_addr_rate    0.8519 # branch address-prediction rate (i.e., addr-hits/updates)
+bpred_bimod.bpred_dir_rate    0.8979 # branch direction-prediction rate (i.e., all-hits/updates)
+bpred_bimod.bpred_jr_rate <error: divide by zero> # JR address-prediction rate (i.e., JR addr-hits/JRs seen)
+bpred_bimod.bpred_jr_non_ras_rate.PP <error: divide by zero> # non-RAS JR addr-pred rate (ie, non-RAS JR hits/JRs seen)
+bpred_bimod.retstack_pushes          232 # total number of address pushed onto ret-addr stack
+bpred_bimod.retstack_pops            0 # total number of address popped off of ret-addr stack
+bpred_bimod.used_ras.PP            0 # total number of RAS predictions used
+bpred_bimod.ras_hits.PP            0 # total number of RAS hits
+bpred_bimod.ras_rate.PP <error: divide by zero> # RAS prediction rate (i.e., RAS hits/used RAS)
+il1.accesses                  13583 # total number of accesses
+il1.hits                      13211 # total number of hits
+il1.misses                      372 # total number of misses
+il1.replacements                  0 # total number of replacements
+il1.writebacks                    0 # total number of writebacks
+il1.invalidations                 0 # total number of invalidations
+il1.miss_rate                0.0274 # miss rate (i.e., misses/ref)
+il1.repl_rate                0.0000 # replacement rate (i.e., repls/ref)
+il1.wb_rate                  0.0000 # writeback rate (i.e., wrbks/ref)
+il1.inv_rate                 0.0000 # invalidation rate (i.e., invs/ref)
+dl1.accesses                   5788 # total number of accesses
+dl1.hits                       5537 # total number of hits
+dl1.misses                      251 # total number of misses
+dl1.replacements                  0 # total number of replacements
+dl1.writebacks                    0 # total number of writebacks
+dl1.invalidations                 0 # total number of invalidations
+dl1.miss_rate                0.0434 # miss rate (i.e., misses/ref)
+dl1.repl_rate                0.0000 # replacement rate (i.e., repls/ref)
+dl1.wb_rate                  0.0000 # writeback rate (i.e., wrbks/ref)
+dl1.inv_rate                 0.0000 # invalidation rate (i.e., invs/ref)
+itlb.accesses                 13583 # total number of accesses
+itlb.hits                     13562 # total number of hits
+itlb.misses                      21 # total number of misses
+itlb.replacements                 0 # total number of replacements
+itlb.writebacks                   0 # total number of writebacks
+itlb.invalidations                0 # total number of invalidations
+itlb.miss_rate               0.0015 # miss rate (i.e., misses/ref)
+itlb.repl_rate               0.0000 # replacement rate (i.e., repls/ref)
+itlb.wb_rate                 0.0000 # writeback rate (i.e., wrbks/ref)
+itlb.inv_rate                0.0000 # invalidation rate (i.e., invs/ref)
+dtlb.accesses                  5793 # total number of accesses
+dtlb.hits                      5771 # total number of hits
+dtlb.misses                      22 # total number of misses
+dtlb.replacements                 0 # total number of replacements
+dtlb.writebacks                   0 # total number of writebacks
+dtlb.invalidations                0 # total number of invalidations
+dtlb.miss_rate               0.0038 # miss rate (i.e., misses/ref)
+dtlb.repl_rate               0.0000 # replacement rate (i.e., repls/ref)
+dtlb.wb_rate                 0.0000 # writeback rate (i.e., wrbks/ref)
+dtlb.inv_rate                0.0000 # invalidation rate (i.e., invs/ref)
+sim_invalid_addrs                 0 # total non-speculative bogus addresses seen (debug var)
+ld_text_base           0x000080b4 # program text (code) segment base
+ld_text_bound          0x00055870 # program text (code) segment bound
+ld_text_size                 317372 # program text (code) size in bytes
+ld_data_base           0x00055870 # program initialized data segment base
+ld_data_bound          0x00069e48 # program initialized data segment bound
+ld_data_size                  83416 # program init'ed `.data' and uninit'ed `.bss' size in bytes
+ld_stack_base          0xc0000000 # program stack segment base (highest address in stack)
+ld_stack_size                 16384 # program initial stack size
+ld_prog_entry          0x000080d0 # program entry point (initial PC)
+ld_environ_base        0xbfffc000 # program environment base address address
+ld_target_big_endian              0 # target executable endian-ness, non-zero if big endian
+mem.page_count                  102 # total number of pages allocated
+mem.page_mem                   408k # total size of memory pages allocated
+mem.ptab_misses                 102 # total first level page table misses
+mem.ptab_accesses            862276 # total page table accesses
+mem.ptab_miss_rate           0.0001 # first level page table miss rate
+
+unlockfile
+FRET    : 8 0 _IO_funlockfile return to _IO_vfprintf
+FRET    : 22 1 _IO_vfprintf return to printf
+FRET    : 7 1 printf return to foo
+FCALL   : 21 -3 foo calling malloc
+FCALL   : 16 -5 malloc calling _int_malloc
+FRET    : 16 2 _int_malloc return to malloc
+FRET    : 21 5 malloc return to foo
+FRET    : 6 3 foo return to bar
+FCALL   : 5 -3 bar calling qcount
+FRET    : 5 0 qcount return to bar
+FCALL   : 6 -3 bar calling foo
+FCALL   : 7 -3 foo calling printf
+FCALL   : 22 -1 printf calling _IO_vfprintf
+FCALL   : 12 -1 _IO_vfprintf calling __errno_location
+FRET    : 12 0 __errno_location return to _IO_vfprintf
+FCALL   : 10 -1 _IO_vfprintf calling _IO_flockfile
+FRET    : 10 0 _IO_flockfile return to _IO_vfprintf
+FCALL   : 12 -1 _IO_vfprintf calling _IO_new_file_xsputn
+FRET    : 12 1 _IO_new_file_xsputn return to _IO_vfprintf
+FCALL   : 8 -1 _IO_vfprintf calling _IO_funlockfile
+FRET    : 8 0 _IO_funlockfile return to _IO_vfprintf
+FRET    : 22 1 _IO_vfprintf return to printf
+FRET    : 7 1 printf return to foo
+FCALL   : 21 -3 foo calling malloc
+FCALL   : 16 -5 malloc calling _int_malloc
+FRET    : 16 2 _int_malloc return to malloc
+FRET    : 21 5 malloc return to foo
+FRET    : 6 3 foo return to bar
+FCALL   : 5 -3 bar calling qcount
+FRET    : 5 0 qcount return to bar
+FRET    : 7 13 bar return to main
+FRET    : 6 13 main return to _dl_init_paths
+FCALL   : 10 -13 _dl_init_paths calling exit
+FCALL   : 5 0 exit calling __libc_csu_fini
+FCALL   : 7 0 __libc_csu_fini calling _fini
+FRET    : 7 0 _fini return to __libc_csu_fini
+FRET    : 5 0 __libc_csu_fini return to exit
+FCALL   : 18 0 exit calling _IO_cleanup
+FCALL   : 5 0 _IO_cleanup calling _IO_flush_all
+FCALL   : 25 0 _IO_flush_all calling _IO_flush_all_lockp
+FCALL   : 10 0 _IO_flush_all_lockp calling _IO_flockfile
+FRET    : 10 0 _IO_flockfile return to _IO_flush_all_lockp
+FCALL   : 8 0 _IO_flush_all_lockp calling _IO_funlockfile
+FRET    : 8 0 _IO_funlockfile return to _IO_flush_all_lockp
+FCALL   : 10 0 _IO_flush_all_lockp calling _IO_flockfile
+FRET    : 10 0 _IO_flockfile return to _IO_flush_all_lockp
+FCALL   : 10 0 _IO_flush_all_lockp calling _IO_file_overflow
+FCALL   : 11 0 _IO_file_overflow calling _IO_new_do_write
+FCALL   : 7 0 _IO_new_do_write calling _IO_file_write
+FCALL   : 4 0 _IO_file_write calling __write
+FRET    : 4 1 __write return to _IO_file_write
+FRET    : 7 1 _IO_file_write return to _IO_new_do_write
+FRET    : 11 1 _IO_new_do_write return to _IO_file_overflow
+FRET    : 10 1 _IO_file_overflow return to _IO_flush_all_lockp
+FCALL   : 8 -1 _IO_flush_all_lockp calling _IO_funlockfile
+FRET    : 8 0 _IO_funlockfile return to _IO_flush_all_lockp
+FCALL   : 10 -1 _IO_flush_all_lockp calling _IO_flockfile
+FRET    : 10 0 _IO_flockfile return to _IO_flush_all_lockp
+FCALL   : 8 -1 _IO_flush_all_lockp calling _IO_funlockfile
+FRET    : 8 0 _IO_funlockfile return to _IO_flush_all_lockp
+FRET    : 25 1 _IO_flush_all_lockp return to _IO_flush_all
+FRET    : 5 1 _IO_flush_all return to _IO_cleanup
+FCALL   : 6 -1 _IO_cleanup calling _IO_file_setbuf
+FCALL   : 9 0 _IO_file_setbuf calling _IO_default_setbuf
+FCALL   : 7 0 _IO_default_setbuf calling _IO_file_sync
+FRET    : 7 0 _IO_file_sync return to _IO_default_setbuf
+FCALL   : 8 0 _IO_default_setbuf calling _IO_setb
+FCALL   : 7 0 _IO_setb calling munmap
+FCALL   : 12 0 munmap calling __errno_location
+FRET    : 12 0 __errno_location return to munmap
+FRET    : 7 0 munmap return to _IO_setb
+FRET    : 8 0 _IO_setb return to _IO_default_setbuf
+FRET    : 9 0 _IO_default_setbuf return to _IO_file_setbuf
+FRET    : 6 0 _IO_file_setbuf return to _IO_cleanup
+FRET    : 18 1 _IO_cleanup return to exit
+FCALL   : 3 -1 exit calling _Exit
